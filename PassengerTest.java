@@ -220,7 +220,7 @@ public class PassengerTest {
 	 * 
 	 * Can be changed after bookingRef format is agreed.
 	 * 
-	 * For now tests that bookingRef is exactly 8 characters
+	 * For now tests that bookingRef is exactly 10 characters
 	 * and that all characters are uppercase letters or numbers.
 	 * 
 	 * @param testPassenger Passenger whose bookingRef to test
