@@ -11,25 +11,26 @@ public class PassengerTest {
 	 * its get methods.
 	 */
 	public void testPassengerConstructor1() {
-		String bookingRef = "A0A0A0A0A0";
-		String firstName = "Gordon";
-		String surname = "Brown";
+		String bookingRef = "A0A0A0A0A0";			// Jack - You can use the setup method to create variables for testing 
+		String firstName = "Gordon";				// that will be used in the tests rather than assigning them each test
+		String surname = "Brown";				// I believe my test class has use of this
 		
 		//will need modified once actual Flight
 		//object is delivered
-		Flight flight = new Flight();
+		Flight flight = new Flight(); 				// Jack - Should we be mocking this object rather than using the actual object
 		
 		Passenger testPassenger = new Passenger(bookingRef, 
 				firstName, surname, flight);
 		
-		assertEquals("BookRef mismatch", bookingRef, 
-				testPassenger.getBookingRefCode());
-		assertEquals("firstName mismatch", firstName, 
-				testPassenger.getFirstName());
+									// Jack - Should we collect all the expected formats of the outputs of different methods somewherer
+		assertEquals("BookRef mismatch", bookingRef, 		// Jack - I've read its good practice to have a new method for each test
+				testPassenger.getBookingRefCode());	// as there can be an issue where if the test fails it stops going
+		assertEquals("firstName mismatch", firstName, 		// through the method. so if the first assert fails then we dont get 
+				testPassenger.getFirstName());		// to see the results of the rest.
 		assertEquals("surname mismatch", surname, 
 				testPassenger.getLastName());
-		assertEquals("flight mismatch", surname, 
-				testPassenger.getLastName());
+		assertEquals("flight mismatch", surname, 		// Jack - you've got getLastName tested twice, I assume this second one 
+				testPassenger.getLastName());		// is supposed to be getFlight?
 	}
 	
 	@Test
@@ -38,8 +39,8 @@ public class PassengerTest {
 	 * as the hash of its bookingRef
 	 */
 	public void testHash1() {
-		String bookingRef = "A0A0A0A0A0";
-		String firstName = "Gordon";
+		String bookingRef = "A0A0A0A0A0";			// Jack - I'll just write it here again think we can use the setup method
+		String firstName = "Gordon";				// to instantiate variables used in tests.
 		String surname = "Brown";
 		
 		//will need modified once actual Flight
@@ -47,10 +48,11 @@ public class PassengerTest {
 		Flight flight = new Flight();
 		
 		Passenger testPassenger = new Passenger(bookingRef, 
-				firstName, surname, flight);
+				firstName, surname, flight);		// Jack - Everything up to this could be included in the setup I think
 		
-		assertEquals("Hash mismatch", bookingRef.hashCode(),
-				testPassenger.hashCode());
+		assertEquals("Hash mismatch", bookingRef.hashCode(),	// Jack - One assert for the test looks good
+				testPassenger.hashCode());		// Jack - Just so I know is the assertEquals in the format
+									// (message to be returned,what we expect,what we actually get)?
 	}
 	
 	@Test
@@ -112,9 +114,9 @@ public class PassengerTest {
 		//object is delivered
 		Flight flight = new Flight();
 		
-		Passenger testPassenger1 = new Passenger(bookingRef, 
-				firstName, surname, flight);
-		Passenger testPassenger2 = new Passenger(bookingRef, 
+		Passenger testPassenger1 = new Passenger(bookingRef, 			// Jack - Would it not make more sense to change up, the names and flight
+				firstName, surname, flight);				// This way youre not just comparing the passenger to themselves, cause thats
+		Passenger testPassenger2 = new Passenger(bookingRef, 			// effectively what youre doing in this test and the next.
 				firstName, surname, flight);
 		
 		assertTrue("Calling passenger is == arg. Should return 0",
@@ -161,8 +163,8 @@ public class PassengerTest {
 		Passenger testPassenger2 = new Passenger(bookingRef, 
 				firstName, surname, flight);
 		
-		assertTrue("Passengers are identical so equals should remain true.",
-				testPassenger.equals(testPassenger2));
+		assertTrue("Passengers are identical so equals should remain true.",		// Jack - So its bookingRef for comparison, what is it for equals?
+				testPassenger.equals(testPassenger2));				// looks like its the booking ref again?
 		
 		assertTrue("Passengers are identical so equals should remain true.",
 				testPassenger2.equals(testPassenger));
@@ -199,7 +201,7 @@ public class PassengerTest {
 	 * Test that Passenger converts chars to upper case
 	 */
 	public void testLower() {
-		String bookingRef = "a0a0a0a0a0";
+		String bookingRef = "a0a0a0a0a0";					 
 		System.out.println(bookingRef.length());
 		String firstName = "Gordon";
 		String surname = "Brown";
@@ -225,8 +227,8 @@ public class PassengerTest {
 	 * 
 	 * @param testPassenger Passenger whose bookingRef to test
 	 */
-	public void testBookingRef(Passenger testPassenger) {
-		assertTrue("Passenger bookingRef should be 10 characters long,"
+	public void testBookingRef(Passenger testPassenger) {						// Is it worth having this as a seperate method, if used the once or 
+		assertTrue("Passenger bookingRef should be 10 characters long,"				// were you plannng on adding more uses of it?
 				+ "consisting of uppercase letters and numbers.",
 				testPassenger.getBookingRefCode().matches("[A-Z0-9]{10}"));
 	}
