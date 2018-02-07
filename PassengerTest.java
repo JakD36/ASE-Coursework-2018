@@ -1,37 +1,117 @@
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
-public class PassengerTest {
+import org.mockito.Mockito;
 
+
+public class PassengerTest {
+	String bookingRef1, firstName1, lastName1,
+		bookingRef2, firstName2, lastName2;
+	
+	Flight flight1, flight2;
+	
+	Passenger passenger1; //has a lower ref than passenger2
+	Passenger passenger2; //has a higher ref than passenger1
+	//equal ref to passenger1, but all other fields different
+	Passenger passenger3;
+	//different ref to passenger1, but all other fields equal
+	Passenger passenger4;
+	Passenger passenger5; //given lowercase booking ref
+	
+	@Before
+	/**
+	 * Set up there Passengers. First passenger has a high
+	 * booking ref, the second a lower and the third has a
+	 * booking ref equal to the first.
+	 */
+	public void setUp() {
+		bookingRef1 = "ABC1234";
+		firstName1 = "Gordon";
+		lastName1 = "Brown";
+		flight1 = Mockito.mock(Flight.class);
+		
+		bookingRef2 = "BBB2222";
+		firstName2 = "Walter";
+		lastName2 = "White";
+		flight2 = Mockito.mock(Flight.class);
+		
+		
+		passenger1 = new Passenger(bookingRef1, 
+				firstName1, lastName1, flight1);
+		
+		//higher ref than one
+		passenger2 = new Passenger(bookingRef2, 
+				firstName2, lastName2, flight2);
+		
+		//same booking ref as passenger1, but different name and flight
+		passenger3 = new Passenger(bookingRef1, 
+				firstName2, lastName2, flight2);
+		
+		//different ref to passenge1, but same name and flight
+		passenger4 = new Passenger(bookingRef2, 
+				firstName1, lastName1, flight1);
+		
+		//lowercase booking ref
+		passenger5 = new Passenger("abc1234", 
+				firstName1, lastName1, flight1);
+	}
+	
 	@Test
 	/**
 	 * Test that Passenger's constructor assigns the correct
-	 * values and that the correct values are returned by
-	 * its get methods.
+	 * booking ref and that the correct value is returned by
+	 * its getBookingRefCode method.
 	 */
-	public void testPassengerConstructor1() {
-		String bookingRef = "A0A0A0A0A0";			// Jack - You can use the setup method to create variables for testing 
-		String firstName = "Gordon";				// that will be used in the tests rather than assigning them each test
-		String surname = "Brown";				// I believe my test class has use of this
-		
-		//will need modified once actual Flight
-		//object is delivered
-		Flight flight = new Flight(); 				// Jack - Should we be mocking this object rather than using the actual object
-		
-		Passenger testPassenger = new Passenger(bookingRef, 
-				firstName, surname, flight);
-		
-									// Jack - Should we collect all the expected formats of the outputs of different methods somewherer
-		assertEquals("BookRef mismatch", bookingRef, 		// Jack - I've read its good practice to have a new method for each test
-				testPassenger.getBookingRefCode());	// as there can be an issue where if the test fails it stops going
-		assertEquals("firstName mismatch", firstName, 		// through the method. so if the first assert fails then we dont get 
-				testPassenger.getFirstName());		// to see the results of the rest.
-		assertEquals("surname mismatch", surname, 
-				testPassenger.getLastName());
-		assertEquals("flight mismatch", surname, 		// Jack - you've got getLastName tested twice, I assume this second one 
-				testPassenger.getLastName());		// is supposed to be getFlight?
+	public void testPassengerConstructorBookingRef() {
+		assertEquals("Booking Ref mismatch", bookingRef1, 
+				passenger1.getBookingRefCode());
 	}
+	
+	@Test
+	/**
+	 * Test that Passenger constructor converts chars to upper case
+	 */
+	public void testPassengerConstructorBookingRef2() {
+		assertTrue("Passenger booking ref should follow pattern of "
+				+ "three uppercase letters followed by 4 numbers",
+				passenger5.getBookingRefCode().matches("[A-Z]{3}[0-9]{4}"));
+	}
+	
+	@Test
+	/**
+	 * Test that Passenger's constructor assigns the correct
+	 * first name and that the correct value is returned by
+	 * its getFirstName method.
+	 */
+	public void testPassengerConstructorFirstName() {
+		assertEquals("first name mismatch", firstName1, 
+				passenger1.getFirstName());
+	}
+	
+	@Test
+	/**
+	 * Test that Passenger's constructor assigns the correct
+	 * last name and that the correct value is returned by
+	 * its getLastName method.
+	 */
+	public void testPassengerConstructorLastName() {
+		assertEquals("last name mismatch", lastName1, 
+				passenger1.getLastName());
+	}
+	
+	@Test
+	/**
+	 * Test that Passenger's constructor assigns the correct
+	 * last name and that the correct value is returned by
+	 * its getFlight method.
+	 */
+	public void testPassengerConstructorFlight() {
+		assertEquals("flight mismatch", flight1, 
+				passenger1.getFlight());
+	}
+	
 	
 	@Test
 	/**
@@ -39,20 +119,8 @@ public class PassengerTest {
 	 * as the hash of its bookingRef
 	 */
 	public void testHash1() {
-		String bookingRef = "A0A0A0A0A0";			// Jack - I'll just write it here again think we can use the setup method
-		String firstName = "Gordon";				// to instantiate variables used in tests.
-		String surname = "Brown";
-		
-		//will need modified once actual Flight
-		//object is delivered
-		Flight flight = new Flight();
-		
-		Passenger testPassenger = new Passenger(bookingRef, 
-				firstName, surname, flight);		// Jack - Everything up to this could be included in the setup I think
-		
-		assertEquals("Hash mismatch", bookingRef.hashCode(),	// Jack - One assert for the test looks good
-				testPassenger.hashCode());		// Jack - Just so I know is the assertEquals in the format
-									// (message to be returned,what we expect,what we actually get)?
+		assertEquals("Hash mismatch", bookingRef1.hashCode(),
+				passenger1.hashCode());
 	}
 	
 	@Test
@@ -60,22 +128,8 @@ public class PassengerTest {
 	 * Test comparing a lower Passenger with a higher passenger.
 	 */
 	public void testCompareTo1() {
-		String bookingRefLow = "A0A0A0A0A0";
-		String bookingRefHigh = "B0A0A0A0A0";
-		String firstName = "Gordon";
-		String surname = "Brown";
-		
-		//will need modified once actual Flight
-		//object is delivered
-		Flight flight = new Flight();
-		
-		Passenger testPassengerSmall = new Passenger(bookingRefLow, 
-				firstName, surname, flight);
-		Passenger testPassengerLarge = new Passenger(bookingRefHigh, 
-				firstName, surname, flight);
-		
 		assertTrue("Calling passenger is < arg. Should return negative value",
-				testPassengerSmall.compareTo(testPassengerLarge) < 0);
+				passenger1.compareTo(passenger2) < 0);
 	}
 	
 	@Test
@@ -83,44 +137,19 @@ public class PassengerTest {
 	 * Test comparing a higher Passenger with a lower one.
 	 */
 	public void testCompareTo2() {
-		String bookingRefLow = "A0A0A0A0A0";
-		String bookingRefHigh = "B0A0A0A0A0";
-		String firstName = "Gordon";
-		String surname = "Brown";
-		
-		//will need modified once actual Flight
-		//object is delivered
-		Flight flight = new Flight();
-		
-		Passenger testPassengerSmall = new Passenger(bookingRefLow, 
-				firstName, surname, flight);
-		Passenger testPassengerLarge = new Passenger(bookingRefHigh, 
-				firstName, surname, flight);
-		
 		assertTrue("Calling passenger is > arg. Should return positive value",
-				testPassengerLarge.compareTo(testPassengerSmall) > 0);
+				passenger2.compareTo(passenger1) > 0);
 	}
 	
 	@Test
 	/**
-	 * Test comparing Passenger to equal Passenger.
+	 * Test comparing Passenger to Passenger with the same
+	 * booking ref, but different name and flight
 	 */
 	public void testCompareTo3() {
-		String bookingRef = "FFFFFFFFFF";
-		String firstName = "Gordon";
-		String surname = "Brown";
-		
-		//will need modified once actual Flight
-		//object is delivered
-		Flight flight = new Flight();
-		
-		Passenger testPassenger1 = new Passenger(bookingRef, 			// Jack - Would it not make more sense to change up, the names and flight
-				firstName, surname, flight);				// This way youre not just comparing the passenger to themselves, cause thats
-		Passenger testPassenger2 = new Passenger(bookingRef, 			// effectively what youre doing in this test and the next.
-				firstName, surname, flight);
-		
-		assertTrue("Calling passenger is == arg. Should return 0",
-				testPassenger1.compareTo(testPassenger2) == 0);
+		assertTrue("Calling passenger has same "
+				+ "bookingRef as arg. Should return 0",
+				passenger1.compareTo(passenger3) == 0);
 	}
 	
 	@Test
@@ -128,108 +157,31 @@ public class PassengerTest {
 	 * Test comparing Passenger with itself.
 	 */
 	public void testCompareTo4() {
-		String bookingRef = "FFFFFFFFFF";
-		String firstName = "Gordon";
-		String surname = "Brown";
-		
-		//will need modified once actual Flight
-		//object is delivered
-		Flight flight = new Flight();
-		
-		Passenger testPassenger = new Passenger(bookingRef, 
-				firstName, surname, flight);
-
-		
-		assertTrue("Calling passenger is the same object as arg. Should return 0",
-				testPassenger.compareTo(testPassenger) == 0);
+		assertTrue("Calling passenger is the same "
+				+ "object as arg. Should return 0",
+				passenger2.compareTo(passenger2) == 0);
 	}
 	
 	@Test
 	/**
-	 * Test Passenger's equals function with two passengers with
-	 * identical values.
+	 * Test equality between passengers with the same
+	 * booking ref, but different name and flight
 	 */
 	public void testEquals1() {
-		String bookingRef = "FFFFFFFFFF";
-		String firstName = "Gordon";
-		String surname = "Brown";
-		
-		//will need modified once actual Flight
-		//object is delivered
-		Flight flight = new Flight();
-		
-		Passenger testPassenger = new Passenger(bookingRef, 
-				firstName, surname, flight);
-		Passenger testPassenger2 = new Passenger(bookingRef, 
-				firstName, surname, flight);
-		
-		assertTrue("Passengers are identical so equals should remain true.",		// Jack - So its bookingRef for comparison, what is it for equals?
-				testPassenger.equals(testPassenger2));				// looks like its the booking ref again?
-		
-		assertTrue("Passengers are identical so equals should remain true.",
-				testPassenger2.equals(testPassenger));
+
+		assertTrue("Passengers have same bookingRef "
+				+ "so equals should remain true.",
+				passenger3.equals(passenger1));
 	}
 	
 	@Test
 	/**
-	 * Test Passenger's equals method with unequal argument.
+	 * Test inequality between passengers with the
+	 * same name and flight but different booking ref
 	 */
 	public void testUnequal() {
-		String bookingRefLow = "A0A0A0A0A0";
-		String bookingRefHigh = "B0A0A0A0A0";
-		String firstName = "Gordon";
-		String surname = "Brown";
-		
-		//will need modified once actual Flight
-		//object is delivered
-		Flight flight = new Flight();
-		
-		Passenger testPassengerSmall = new Passenger(bookingRefLow, 
-				firstName, surname, flight);
-		Passenger testPassengerLarge = new Passenger(bookingRefHigh, 
-				firstName, surname, flight);
-		
-		assertEquals("Passengers are not equal. Result should be false",
-				testPassengerSmall.equals(testPassengerLarge), false);
-		assertEquals("Passengers are not equal. Result should be false",
-				testPassengerLarge.equals(testPassengerSmall), false);
-	}
-	
-	
-	@Test
-	/**
-	 * Test that Passenger converts chars to upper case
-	 */
-	public void testLower() {
-		String bookingRef = "a0a0a0a0a0";					 
-		System.out.println(bookingRef.length());
-		String firstName = "Gordon";
-		String surname = "Brown";
-		
-		//will need modified once actual Flight
-		//object is delivered
-		Flight flight = new Flight();
-		
-		Passenger testPassenger = new Passenger(bookingRef, 
-				firstName, surname, flight);
-
-		
-		testBookingRef(testPassenger);
-	}
-	
-	/**
-	 * Test bookingRef is in a valid format.
-	 * 
-	 * Can be changed after bookingRef format is agreed.
-	 * 
-	 * For now tests that bookingRef is exactly 10 characters
-	 * and that all characters are uppercase letters or numbers.
-	 * 
-	 * @param testPassenger Passenger whose bookingRef to test
-	 */
-	public void testBookingRef(Passenger testPassenger) {						// Is it worth having this as a seperate method, if used the once or 
-		assertTrue("Passenger bookingRef should be 10 characters long,"				// were you plannng on adding more uses of it?
-				+ "consisting of uppercase letters and numbers.",
-				testPassenger.getBookingRefCode().matches("[A-Z0-9]{10}"));
+		assertFalse("Passengers bookingRefs are"
+				+ " not equal. Result should be false",
+				passenger1.equals(passenger4));
 	}
 }
