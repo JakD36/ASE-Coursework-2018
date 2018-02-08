@@ -49,7 +49,7 @@ public class PassengerTest {
 		passenger3 = new Passenger(bookingRef1, 
 				firstName2, lastName2, flight2);
 		
-		//different ref to passenge1, but same name and flight
+		//different ref to passenger1, but same name and flight
 		passenger4 = new Passenger(bookingRef2, 
 				firstName1, lastName1, flight1);
 		
