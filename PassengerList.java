@@ -70,7 +70,7 @@ public class PassengerList {
 	/**
 	 * 
 	 */
-	public boolean checkInPassenger(String bookingRefCode) {
+	public boolean checkInPassenger(String bookingRefCode){
 		if(passengersNotCheckedIn.containsKey(bookingRefCode)){
 			passengersCheckedIn.put(bookingRefCode,passengersNotCheckedIn.get(bookingRefCode));
 			passengersNotCheckedIn.remove(bookingRefCode);
