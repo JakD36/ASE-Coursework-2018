@@ -10,7 +10,7 @@ public class CheckInHandler {
 		loadPassengers();
 	}
 	
-	public boolean processPassenger(String bookingReference) {
+	public boolean processPassenger(String bookingReference, String lastName) {
 		return true;
 	}
 	
