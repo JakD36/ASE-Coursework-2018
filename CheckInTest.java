@@ -31,10 +31,9 @@ public class CheckInTest {
 	
 	@Test
 	/**
+	 * Tests whether two emtpy strings as input to processPassenger will be accepted.
 	 * The processPassenger method takes in the 
 	 * booking reference and the last name of the passenger.
-	 * This test checks that empty strings cant be passed
-	 * through and return as successful.
 	 */
 	public void processPassengerTest1() {
 		assertFalse(desk.processPassenger("",""));
@@ -81,7 +80,7 @@ public class CheckInTest {
 	
 	@Test
 	/**
-	 * Attempts to check in the same passenger twice, when there is only one passenger on the list
+	 * Attempts to check in the same passenger twice, when there is only one passenger on the list.
 	 */
 	public void numToCheckInTest1() {
 		desk.processPassenger("dav0001","Davidson");
