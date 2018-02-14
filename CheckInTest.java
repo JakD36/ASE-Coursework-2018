@@ -55,7 +55,7 @@ public class CheckInTest {
 	 * reference returns does not return as successful.
 	 */
 	public void processPassengerTest3() {
-		assertFalse(desk.processPassenger("Dav001","osdfijsdjg"));
+		assertFalse(desk.processPassenger("dav0001","osdfijsdjg"));
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ public class CheckInTest {
 	 * returns successful.
 	 */
 	public void processPassengerTest4() {
-		assertTrue(desk.processPassenger("dav001","Davidson"));
+		assertTrue(desk.processPassenger("dav0001","Davidson"));
 	}
 	
 	@Test
@@ -88,8 +88,8 @@ public class CheckInTest {
 	 * thoughts!
 	 */
 	public void numToCheckInTest1() {
-		desk.processPassenger("dav001","Davidson");
-		desk.processPassenger("dav001","Davidson");
+		desk.processPassenger("dav0001","Davidson");
+		desk.processPassenger("dav0001","Davidson");
 		assertFalse(desk.getNumToCheckIn() < 0);
 	}
 	
@@ -99,7 +99,7 @@ public class CheckInTest {
 	 * defined by the regular expression found below.
 	 */
 	public void generateReportsTest1() {
-		String regex = "Flight code: [a-z]{3}\\d{3}\nNumber of Passengers: \\d+\nTotal Baggage Weight: \\d+\nTotal Baggage Volume: \\d+\nTotal Excess Fees: \\d+\nCapacity Exceeded: (yes|no)";
+		String regex = "Flight code: [a-z]{3}\\d{4}\nNumber of Passengers: \\d+\nTotal Baggage Weight: \\d+\nTotal Baggage Volume: \\d+\nTotal Excess Fees: \\d+\nCapacity Exceeded: (yes|no)";
 		Matcher m = Pattern.compile(regex).matcher(desk.generateReport());
 		assertEquals(true,m.matches());
 	}
