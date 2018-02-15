@@ -304,8 +304,8 @@ public class GUI extends JFrame implements ActionListener
 			//booking ref does not exist
 			} catch(IllegalReferenceCodeException e) {
 				//inform user
-				lblResponse.setText("<html><font color = 'red'>"
-						+ "Booking Reference Not Found!</font></html>");
+				lblResponse.setText("<html><font color = 'red'>" + e.getMessage()
+				+ "</font></html>");
 			}
 		}
 	}
