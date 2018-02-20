@@ -103,13 +103,7 @@ public class PassengerList {
 		// if the method hasn't been stopped from the return above, then we can add the passenger to the right hashmap
 		if(checkedIn){
 			passengersCheckedIn.put(thePassenger.getBookingRefCode(),thePassenger);
-<<<<<<< HEAD
-			thePassenger.getFlight().addPassengerAndBaggage(0,0); // Add to the number of passengers on this flight, there is no information on the baggage for these passengers
-=======
-
 			thePassenger.getFlight().addPassengerAndBaggage(0,0,0); // Add to the number of passengers on this flight, there is no information on the baggage for these passengers
-
->>>>>>> Jack
 		}
 		else{
 			passengersNotCheckedIn.put(thePassenger.getBookingRefCode(),thePassenger);

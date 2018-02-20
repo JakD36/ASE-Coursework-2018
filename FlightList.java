@@ -35,9 +35,7 @@ public class FlightList {
 						Integer.parseInt(parts[3]),
 						Float.parseFloat(parts[4]),
 						Float.parseFloat(parts[5]),
-						Float.parseFloat(parts[6]),
-						Float.parseFloat(parts[7]),
-						Float.parseFloat(parts[8]));
+						Float.parseFloat(parts[6]));
 
 				flights.put(parts[0], currentFlight);
 			}

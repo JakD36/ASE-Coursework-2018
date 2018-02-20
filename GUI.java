@@ -296,7 +296,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener
 					//if there are baggage fees, inform user
 					else {
 						//format string to 2dp and use red colouring
-						String feeString = String.format("£%.2f", fees);
+						String feeString = String.format("%.2f", fees);
 						
 						lblResponse.setText("<html>User checked in. "
 								+ "Collect baggage fee: <font color = 'red'>"
