@@ -1,4 +1,8 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Scanner;
+
 
 import javax.swing.text.DefaultStyledDocument.ElementSpec;
 
@@ -30,7 +34,9 @@ public class CheckInHandler {
 	 */
 	public boolean checkDetails(String bookingReference, String lastName) throws IllegalReferenceCodeException{
 		if( passengers.getNotCheckedIn().containsKey(bookingReference) ){	// Check that the booking reference provided matches, a passenger to be checked in
-			if(passengers.getNotCheckedIn().get(bookingReference).getLastName() == lastName){	// Checks if the passenger 
+
+			//Strings should compared with .equals in Java
+			if(passengers.getNotCheckedIn().get(bookingReference).getLastName().equals(lastName)){	// Checks if the passenger 
 				return true; // Return true to show that the details match with a passenger to be checked in.
 			}
 			else{
@@ -42,8 +48,7 @@ public class CheckInHandler {
 		}
 		else{ // Throw an exception if there is no passenger that matches this booking reference code
 			throw new IllegalReferenceCodeException(bookingReference+": There is no booking reference on record.");
-		}
-		return false;
+    }
 	}
 
 	/**
@@ -59,8 +64,9 @@ public class CheckInHandler {
 	 */
 	public float processPassenger(String bookingReference, float[] dimensions, float weight) throws IllegalReferenceCodeException{
 		float fee;	// Fee due from passenger, calculated from the weight Fee, volume fee and the multiplier for the passengers flight
-		float weightFee = 0, volFee = 0; // 
-		float multiplier = 1;
+
+		float weightFee = 0f, volFee = 0f;
+		float multiplier = 1f;
 
 		float vol = dimensions[0]*dimensions[1]*dimensions[2]; // Calculate the volume of the baggage
 		
@@ -68,8 +74,12 @@ public class CheckInHandler {
 		
 		// Find the maximum baggage allowances for each passenger on that flight, 
 		// take into account some passengers may go beyond the limit!
-		float maxWeight = ( flight.getMaxBaggageWeight() / flight.getPassengerCapacity() )*0.8;
-		float maxVol = ( flight.getMaxBaggageVolume() / flight.getPassengerCapacity() )*0.8;
+    
+		float maxWeight = (float) (( flight.getMaxBaggageWeight() / flight.getPassengerCapacity() )*0.8);
+		float maxVol = (float) (( flight.getMaxBaggageVolume() / flight.getPassengerCapacity() )*0.8);
+		
+// 		System.out.println("weight: " + weight + ", maxWeight: " + maxWeight);
+// 		System.out.println("volFee: " + volFee + ", maxVol: " + maxVol);
 		
 		// basic calculation to find the fees from the excess
 		weightFee = weight-maxWeight;
@@ -80,6 +90,10 @@ public class CheckInHandler {
 		if (volFee<0){ volFee = 0; }
 
 		fee = (weightFee+volFee)*multiplier;
+
+// 		System.out.println("weightFee: " + weightFee + ", volFee: " + volFee + 
+// 				"multiplier: " + multiplier + ", fee: " + fee);
+
 
 		if(passengers.checkInPassenger(bookingReference)){ // Attempt to check in the passenger
 			flight.addPassengerAndBaggage(vol,weight);	// If they are checked in add baggage, and incrememnt number of passengers
@@ -131,16 +145,26 @@ public class CheckInHandler {
 	 */
 	private void loadPassengers() {
 		File f = new File("passengers.txt");
-		Scanner scanner = new Scanner(f);
-		while (scanner.hasNextLine()) {     
-			String inputLine = scanner.nextLine();   
-			String parts[] = inputLine.split(",");
-			passengers.add(new Passenger(
-				parts[0], // Booking reference code
-				parts[1], // First name
-				parts[2], // Last name
-				flights.get(parts[4])),	// Use flight code to link to the flight object			// !!! COULD THIS THROW AN EXCEPTION !!! if the corresponding flight doesn't exist?
-				Boolean.parseBoolean(parts[4])); // Whether the passenger is already checked in
+
+		Scanner scanner;
+		
+		try {
+			scanner = new Scanner(f);
+			
+			while (scanner.hasNextLine()) {     
+				String inputLine = scanner.nextLine();   
+				String parts[] = inputLine.split(",");
+				passengers.add(new Passenger(
+					parts[0], // Booking reference code
+					parts[1], // First name
+					parts[2], // Last name
+					flights.get(parts[3])),	// Use flight code to link to the flight object			// !!! COULD THIS THROW AN EXCEPTION !!! if the corresponding flight doesn't exist?
+					Boolean.parseBoolean(parts[4])); // Whether the passenger is already checked in
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
 		}
 	}
 	
@@ -150,17 +174,30 @@ public class CheckInHandler {
 	 */
 	private void loadFlights() {
 		File f = new File("flight.txt");
-		Scanner scanner = new Scanner(f);
-		while (scanner.hasNextLine()) {     
-			String inputLine = scanner.nextLine();   //do something with this line     
-			String parts[] = inputLine.split(",");
-			flights.add(new Flight(parts[0],
-					parts[1],
-					parts[2],
-					Integer.parseInt(parts[4]),
-					Float.parseFloat(parts[5]),
-					Float.parseFloat(parts[6]),
-					Float.parseFloat(parts[7])));
+
+		Scanner scanner;
+		
+		//instantiate Flight HashMap
+		flights = new HashMap<String, Flight>();
+		
+		//added try catch
+		try {
+			scanner = new Scanner(f);
+			while (scanner.hasNextLine()) {     
+				String inputLine = scanner.nextLine();   //do something with this line     
+				String parts[] = inputLine.split(",");
+				//changed to put
+				flights.put(parts[0], new Flight(parts[0],
+						parts[1],
+						parts[2],
+						Integer.parseInt(parts[4]),
+						Float.parseFloat(parts[5]),
+						Float.parseFloat(parts[6])
+					));
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

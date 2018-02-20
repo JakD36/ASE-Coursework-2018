@@ -9,7 +9,9 @@ public class PassengerList {
 	 * Default constructor for the PassengerList.
 	 */
 	public PassengerList() {
-		
+		//instantiate HashMaps
+		passengersCheckedIn = new HashMap<String,Passenger>();
+		passengersNotCheckedIn =new  HashMap<String,Passenger>();
 	}
 	
 	/**
@@ -21,13 +23,17 @@ public class PassengerList {
 	 * @return	The passenger with the matching booking reference code.
 	 * @throws	IllegalReferenceCodeException	If there is no passenger with a matching booking reference code in either of the two maps.
 	 */
-	public Passenger get(String bookingRefCode) throws IllegalReferenceCode {
-		if(output = passengersCheckedIn.get(bookingRefCode) != null){
+	public Passenger get(String bookingRefCode) throws IllegalReferenceCodeException {
+		Passenger output;
+		if((output = passengersCheckedIn.get(bookingRefCode)) != null){
 			return output;
-		}else if(output = passengersNotCheckedIn.get(bookingRefCode) != null){
+		}else if((output = passengersNotCheckedIn.get(bookingRefCode)) != null){
 			return output;
 		}else{
-			throw new IllegalReferenceCode("There is no passenger with this reference code: "+bookingRefCode);
+
+			throw new IllegalReferenceCodeException
+			("There is no passenger with this reference code: "+bookingRefCode);
+
 		}
 	}
 
@@ -61,7 +67,9 @@ public class PassengerList {
 		// if the method hasn't been stopped from the return above, then we can add the passenger to the right hashmap
 		if(checkedIn){
 			passengersCheckedIn.put(thePassenger.getBookingRefCode(),thePassenger);
-			thePasenger.getFlight().addPassengerAndBaggage(0,0); // Add to the number of passengers on this flight, there is no information on the baggage for these passengers
+
+			thePassenger.getFlight().addPassengerAndBaggage(0,0); // Add to the number of passengers on this flight, there is no information on the baggage for these passengers
+
 		}
 		else{
 			passengersNotCheckedIn.put(thePassenger.getBookingRefCode(),thePassenger);

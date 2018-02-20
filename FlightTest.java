@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,9 +14,14 @@ class FlightTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		flights.add(new Flight("AZ1234","Rome","Alitalia",120,12,22,2.5f));
-		flights.add(new Flight("FR1234","London Stansted","Ryanair",180,10,10,5));
-		flights.add(new Flight("U21234","Edinburgh","Easyjet",160,13,12,1.25f));
+
+		//set up flights for test
+		//set 4 flights with 4 passengers each
+		flights.add(new Flight("AZ1234","Rome","Alitalia",12,22,2.5f, 100, 100f,100f));
+		flights.add(new Flight("FR1234","London Stansted","Ryanair",10,10,5,3,100f,100f));
+		flights.add(new Flight("U21234","Edinburgh","Easyjet",13,12,1.25f,100,10f,100f));
+		flights.add(new Flight("U24321","Milan Malpensa","Easyjet",13,12,1.25f,100,100f,10f));
+
 		
 		for (Flight f : flights)
 		{
@@ -24,6 +30,7 @@ class FlightTest {
 			f.addPassengerAndBaggage(50, 2);
 			f.addPassengerAndBaggage(15, 14);
 		}
+
 	}
 
 	
@@ -36,10 +43,11 @@ class FlightTest {
 		
 		for (Flight f : flights)
 		{
-		
-		String regex = "Flight code: [a-z]{3}\\d{4}\nNumber of Passengers: \\d+\nTotal Baggage Weight: \\d+\nTotal Baggage Volume: \\d+\nTotal Excess Fees: \\d+\nCapacity Exceeded: (yes|no)";
-		Matcher m = Pattern.compile(regex).matcher(f.generateReport());
-		assertEquals(true,m.matches());
+
+			String regex = "Flight code: [a-zA-Z0-9]{2}[0-9]{4}\nNumber of Passengers: [0-9]+\nTotal Baggage Weight: [0-9]+\\.[0-9]+\nTotal Baggage Volume: [0-9]+\\.[0-9]+\nTotal Excess Fees: [0-9]+\\.[0-9]+\nExceeded: (yes|no)";
+			String rep = f.generateReport().trim();
+			assertTrue(rep.matches(regex));
+
 		}
 	}
 	
@@ -64,7 +72,9 @@ class FlightTest {
 	public void generateReportsTest3() {
 		for (Flight f : flights)
 		{
-		assertFalse(f.generateReport() == "");
+
+			assertFalse(f.generateReport().equals(""));
+
 		}
 	}
 
@@ -75,23 +85,40 @@ class FlightTest {
 		
 		for (Flight f : flights)
 		{
-			assert(f.getTotalPassengers()==4);
+
+			assert(f.getCurrentTotalPassengers()==4);
+
 		}
 	}
 	
 	@Test
 	void testTotalFees1() {
-		assertEquals(flights.get(0).getTotalFees(),0f);
+
+		assertEquals(flights.get(0).getCurrentTotalFees(),0f);
+
 	}
 	
 	@Test
 	void testTotalFees2() {
-		assertEquals(flights.get(1).getTotalFees(),45f);
+
+		assertEquals(flights.get(1).getCurrentTotalFees(),45f);
+
 	}
 	
 	@Test
 	void testTotalFees3() {
-		assertEquals(flights.get(2).getTotalFees(),6.25f);
+
+		assertEquals(flights.get(2).getCurrentTotalFees(),6.25f);
+	}
+	
+	
+	@Test
+	void checkExceeding() {
+		assertEquals(flights.get(0).hasExceeded(),false);
+		assertEquals(flights.get(1).hasExceeded(),true);
+		assertEquals(flights.get(2).hasExceeded(),true);
+		assertEquals(flights.get(3).hasExceeded(),true);
+
 	}
 
 }

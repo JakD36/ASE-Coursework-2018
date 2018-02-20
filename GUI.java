@@ -257,32 +257,44 @@ public class GUI extends JFrame implements ActionListener
 			//try to check user in
 			try {			
 				//try to check in
-				checkInHandler.processPassenger(bookingRef, lastName);
-								
-				//declare dimension floats
-				float[] dimensions = new float[3];
+
+				boolean matches = checkInHandler.checkDetails(bookingRef, lastName);
 				
-				//populate floats with information from user
-				dimensions[0] = getFloat("width");
-				dimensions[1] = getFloat("height");
-				dimensions[2] = getFloat("depth");
-				
-				float weight = getFloat("weight");
-				
-				//try to process baggage
-				float fees = checkInHandler.processBaggage(dimensions, weight);
-				
-				//if there are no baggage fees, inform user
-				if(fees <= 0)
-					lblResponse.setText("User checked in. Baggage ok.");
-				//if there are baggage fees, inform user
-				else {
-					//format string to 2dp and use red colouring
-					String feeString = String.format("£%.2f", fees);
+				//if the booking ref exists and matches the surname, proceed
+				if(matches) {
+					//declare dimension floats
+					float[] dimensions = new float[3];
 					
-					lblResponse.setText("<html>User checked in. "
-							+ "Collect baggage fee: <font color = 'red'>"
-							+ feeString + ".</font></html>");
+					//populate floats with information from user
+					dimensions[0] = getFloat("width");
+					dimensions[1] = getFloat("height");
+					dimensions[2] = getFloat("depth");
+					
+					float weight = getFloat("weight");
+					
+					//try to process passenger
+					float fees = 
+							checkInHandler.processPassenger(bookingRef, dimensions, weight);
+					
+					//if there are no baggage fees, inform user
+					if(fees <= 0)
+						lblResponse.setText("User checked in. Baggage ok.");
+					//if there are baggage fees, inform user
+					else {
+						//format string to 2dp and use red colouring
+						String feeString = String.format("Â£%.2f", fees);
+						
+						lblResponse.setText("<html>User checked in. "
+								+ "Collect baggage fee: <font color = 'red'>"
+								+ feeString + ".</font></html>");
+					}
+				//if the booking ref exists, but does not match a user
+				} else {
+					//inform user
+					lblResponse.setText("<html><font color = 'red'>"
+							+ "Booking Reference does not match surname!"
+							+ "</font></html>");
+
 				}
 			//if the user presses cancel on the input dialog, a 
 			//NullPointerException is thrown
@@ -291,11 +303,13 @@ public class GUI extends JFrame implements ActionListener
 				lblResponse.setText("<html><font color = 'red'>"
 						+ "Check In Cancelled!</font></html>");
 			//this exception is thrown by CheckInHandler if check in
-			//details are erroneous
+
+			//booking ref does not exist
 			} catch(IllegalReferenceCodeException e) {
 				//inform user
-				lblResponse.setText("<html><font color = 'red'>"
-						+ "Invalid Booking!</font></html>");
+				lblResponse.setText("<html><font color = 'red'>" + e.getMessage()
+				+ "</font></html>");
+
 			}
 		}
 	}
