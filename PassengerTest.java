@@ -18,7 +18,7 @@ public class PassengerTest {
 	Passenger passenger3;
 	//different ref to passenger1, but all other fields equal
 	Passenger passenger4;
-	Passenger passenger5; //given lowercase booking ref
+	Passenger passenger5; //given uppercase booking ref
 	
 	@Before
 	/**
