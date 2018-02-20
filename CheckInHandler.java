@@ -183,10 +183,10 @@ public class CheckInHandler {
 				flights.put(parts[0], new Flight(parts[0],
 						parts[1],
 						parts[2],
-						Integer.parseInt(parts[4]),
+						Integer.parseInt(parts[3]),
+						Float.parseFloat(parts[4]),
 						Float.parseFloat(parts[5]),
-						Float.parseFloat(parts[6]),
-						Float.parseFloat(parts[7])
+						Float.parseFloat(parts[6])
 					));
 			}
 		} catch (FileNotFoundException e) {
