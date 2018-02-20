@@ -87,7 +87,7 @@ public class Flight {
 		report.append(String.format("Total Baggage Volume: %.2f\n", this.maxBaggageVolume));
 		report.append(String.format("Total Excess Fees: %.2f\n", this.currentTotalFees));
 		report.append(String.format("Exceeded: %s\n",excess));
-		// report.append(String.format("Exceeded: %s\n", this.hasExceeded() ? "yes" : "no"));
+		
 
 		return report.toString();
 	}

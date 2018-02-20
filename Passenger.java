@@ -2,7 +2,7 @@ public class Passenger {
 	private String bookingRefCode;
 	private String firstName;
 	private String lastName;
-	Flight flight;
+	private Flight flight;
 
 	public Passenger(String bookingRefCode, String firstName, String lastName, Flight flight) 
 		throws IllegalReferenceCodeException {
@@ -13,42 +13,26 @@ public class Passenger {
 		("Illegal booking reference passed to constructor: " + bookingRefCode);
 	}
 		
-	this.setBookingRefCode(bookingRefCode);
-	this.setFirstName(firstName);
-	this.setLastName(lastName);
-	this.setFlight(flight);
+	this.bookingRefCode = bookingRefCode;
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.flight = flight;
 }
 
 	public String getBookingRefCode() {
 		return this.bookingRefCode;
 		}
 	
-	public void setBookingRefCode(String bookingRefCode) {
-		this.bookingRefCode = bookingRefCode;
-		}
-	
 	public String getFirstName() {
 		return this.firstName;
-		}
-	
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
 		}
 	
 	public String getLastName() {
 		return this.lastName;
 		}
 	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-		}
-	
 	public Flight getFlight() {
 		return this.flight;
-		}
-	
-	public void setFlight(Flight flight) {
-		this.flight = flight;
 		}
 	
 	public boolean equals(Object obj)
