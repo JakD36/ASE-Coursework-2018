@@ -4,6 +4,7 @@ public class Passenger {
 	private String lastName;
 	Flight flight;
 
+<<<<<<< HEAD
 	public Passenger(String bookingRefCode, String firstName, String lastName, Flight flight) 
 		throws IllegalReferenceCodeException {
 	//validate booking ref code
@@ -18,6 +19,14 @@ public class Passenger {
 	this.setLastName(lastName);
 	this.setFlight(flight);
 }
+=======
+	public Passenger(String bookingRefCode, String firstName, String lastName, Flight flight) {
+		this.setBookingRefCode(bookingRefCode);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+		this.setFlight(flight);
+	}
+>>>>>>> Jack
 
 	public String getBookingRefCode() {
 		return this.bookingRefCode;
