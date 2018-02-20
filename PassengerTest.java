@@ -27,12 +27,12 @@ public class PassengerTest {
 	 * booking ref equal to the first.
 	 */
 	public void setUp() {
-		bookingRef1 = "ABC1234";
+		bookingRef1 = "abc1234";
 		firstName1 = "Gordon";
 		lastName1 = "Brown";
 		flight1 = Mockito.mock(Flight.class);
 		
-		bookingRef2 = "BBB2222";
+		bookingRef2 = "bbb2222";
 		firstName2 = "Walter";
 		lastName2 = "White";
 		flight2 = Mockito.mock(Flight.class);
@@ -53,8 +53,8 @@ public class PassengerTest {
 		passenger4 = new Passenger(bookingRef2, 
 				firstName1, lastName1, flight1);
 		
-		//lowercase booking ref
-		passenger5 = new Passenger("abc1234", 
+		//uppercase booking ref
+		passenger5 = new Passenger("ABC1234", 
 				firstName1, lastName1, flight1);
 	}
 	
