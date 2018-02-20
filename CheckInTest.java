@@ -31,10 +31,9 @@ public class CheckInTest {
 	
 	@Test
 	/**
+	 * Tests whether two emtpy strings as input to processPassenger will be accepted.
 	 * The processPassenger method takes in the 
 	 * booking reference and the last name of the passenger.
-	 * This test checks that empty strings cant be passed
-	 * through and return as successful.
 	 */
 	public void processPassengerTest1() {
 		assertFalse(desk.processPassenger("",""));
@@ -81,11 +80,7 @@ public class CheckInTest {
 	
 	@Test
 	/**
-	 * Tries to remove two passengers when you only have 1 on
-	 * the list. 
-	 * 
-	 * Unsure if this test is necessary please get back to me on your
-	 * thoughts!
+	 * Attempts to check in the same passenger twice, when there is only one passenger on the list.
 	 */
 	public void numToCheckInTest1() {
 		desk.processPassenger("dav0001","Davidson");
@@ -93,32 +88,4 @@ public class CheckInTest {
 		assertFalse(desk.getNumToCheckIn() < 0);
 	}
 	
-	@Test
-	/**
-	 * Test that the report generated is of the expected format,
-	 * defined by the regular expression found below.
-	 */
-	public void generateReportsTest1() {
-		String regex = "Flight code: [a-z]{3}\\d{4}\nNumber of Passengers: \\d+\nTotal Baggage Weight: \\d+\nTotal Baggage Volume: \\d+\nTotal Excess Fees: \\d+\nCapacity Exceeded: (yes|no)";
-		Matcher m = Pattern.compile(regex).matcher(desk.generateReport());
-		assertEquals(true,m.matches());
-	}
-	
-	@Test
-	/**
-	 * Tests that the generate report does return a String object,
-	 * and that it doesn't return nothing.
-	 */
-	public void generateReportsTest2() {
-		assertFalse(desk.generateReport() == null);
-	}
-	
-	@Test
-	/**
-	 * Test to make sure that the generate report doesn't
-	 * just return an empty string.
-	 */
-	public void generateReportsTest3() {
-		assertFalse(desk.generateReport() == "");
-	}
 }
