@@ -78,9 +78,6 @@ public class CheckInHandler {
 		float maxWeight = (float) (( flight.getMaxBaggageWeight() / flight.getPassengerCapacity() )*0.8);
 		float maxVol = (float) (( flight.getMaxBaggageVolume() / flight.getPassengerCapacity() )*0.8);
 		
-// 		System.out.println("weight: " + weight + ", maxWeight: " + maxWeight);
-// 		System.out.println("volFee: " + volFee + ", maxVol: " + maxVol);
-		
 		// basic calculation to find the fees from the excess
 		weightFee = weight-maxWeight;
 		volFee = vol-maxVol;
@@ -91,17 +88,13 @@ public class CheckInHandler {
 
 		fee = (weightFee+volFee)*multiplier;
 
-// 		System.out.println("weightFee: " + weightFee + ", volFee: " + volFee + 
-// 				"multiplier: " + multiplier + ", fee: " + fee);
-
-
 		if(passengers.checkInPassenger(bookingReference)){ // Attempt to check in the passenger
-			flight.addPassengerAndBaggage(vol,weight);	// If they are checked in add baggage, and incrememnt number of passengers
+			flight.addPassengerAndBaggage(vol,weight,fee);	// If they are checked in add baggage, and incrememnt number of passengers
 		}
-		else{
-			// If for some reason the passenger cannot be checked in, we need to return an error
-			fee = -1; 																// Please get back to me on this on what you think, as this fails a test!
-		}
+//		else{
+//			// If for some reason the passenger cannot be checked in, we need to return an error
+//			fee = -1; 																// Please get back to me on this on what you think, as this fails a test!
+//		}
 
 		// Output the final fee due from the passenger,
 		return fee;
@@ -192,7 +185,8 @@ public class CheckInHandler {
 						parts[2],
 						Integer.parseInt(parts[4]),
 						Float.parseFloat(parts[5]),
-						Float.parseFloat(parts[6])
+						Float.parseFloat(parts[6]),
+						Float.parseFloat(parts[7])
 					));
 			}
 		} catch (FileNotFoundException e) {

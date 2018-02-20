@@ -1,15 +1,15 @@
 public class Passenger {
-private String bookingRefCode;
-private String firstName;
-private String lastName;
-Flight flight;
+	private String bookingRefCode;
+	private String firstName;
+	private String lastName;
+	Flight flight;
 
-public Passenger(String bookingRefCode, String firstName, String lastName, Flight flight) {
-	this.setBookingRefCode(bookingRefCode);
-	this.setFirstName(firstName);
-	this.setLastName(lastName);
-	this.setFlight(flight);
-}
+	public Passenger(String bookingRefCode, String firstName, String lastName, Flight flight) {
+		this.setBookingRefCode(bookingRefCode);
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+		this.setFlight(flight);
+	}
 
 	public String getBookingRefCode() {
 		return this.bookingRefCode;

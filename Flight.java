@@ -19,13 +19,10 @@ public class Flight {
 	private float currentTotalFees;
 	
 	//total limits in the aircraft
-	private float maxTotalBaggageVolume;
-	private float maxTotalBaggageWeight;
 	private int passengerCapacity; 
 	
 	public Flight(String flightCode, String destination, String carrier,
-			float maxVol, float maxWeight,float feeMultiplier, 
-			int passengerCapacity,float totalBV, float totalBW) {
+			int passengerCapacity, float maxVol, float maxWeight,float feeMultiplier) {
 
 		this.setFlightCode(flightCode);
 		this.setDestination(destination);
@@ -34,117 +31,40 @@ public class Flight {
 		this.setMaxBaggageVolume(maxVol);
 		this.setMaxBaggageWeight(maxWeight);
 		this.setFeeMultplier(feeMultiplier);
-
-		this.setMaxTotalBaggageWeight(totalBW);
-		this.setMaxTotalBaggageVolume(totalBV);
 	}
 	
-	public int getCurrentTotalPassengers()
-	{
-		return this.currentTotalPassengers;
-
-	}
-
 	public String getFlightCode() {
 		return flightCode;
-	}
-
-	public void setFlightCode(String flightCode) {
-		this.flightCode = flightCode;
 	}
 
 	public String getDestination() {
 		return destination;
 	}
 
-	public void setDestination(String destination) {
-		this.destination = destination;
+	public float getMaxBaggageVolume() {
+		return maxBaggageVolume;
+	}
+	
+	public float getMaxBaggageWeight() {
+		return maxBaggageWeight;
+	}
+	
+	public int getPassengerCapacity() {
+		return passengerCapacity;
 	}
 
 	public String getCarrier() {
 		return carrier;
 	}
-
-	public void setCarrier(String carrier) {
-		this.carrier = carrier;
-	}
-
-	public int getPassengerCapacity() {
-		return passengerCapacity;
-	}
-
-	public void setPassengerCapacity(int passengerCapacity) {
-		this.passengerCapacity = passengerCapacity;
-	}
-
-	public float getMaxBaggageVolume() {
-		return maxBaggageVolume;
-	}
-
-	public void setMaxBaggageVolume(float maxBaggageVolume) {
-		this.maxBaggageVolume = maxBaggageVolume;
-	}
-
-	public float getFeeMultplier() {
-		return feeMultplier;
-	}
-
-	public void setFeeMultplier(float feeMultplier) {
-		this.feeMultplier = feeMultplier;
-	}
-
-	public float getMaxBaggageWeight() {
-		return maxBaggageWeight;
-	}
-
-	public void setMaxBaggageWeight(float maxBaggageWeight) {
-		this.maxBaggageWeight = maxBaggageWeight;
-	}
-
-
-	public float getCurrentTotalBaggageVolume() {
-		return currentTotalBaggageVolume;
-	}
-
-	public void setCurrentTotalBaggageVolume(float totalBaggageVolume) {
-		this.currentTotalBaggageVolume = totalBaggageVolume;
-	}
-
-	public float getCurrentTotalFees() {
-		return currentTotalFees;
-	}
-
-	public void setCurrentTotalFees(float totalFees) {
-		this.currentTotalFees = totalFees;
-	}
-
-	public float getCurrentTotalBaggageWeight() {
-		return currentTotalBaggageWeight;
-	}
-
-	public void setCurrentTotalBaggageWeight(float totalBaggageWeight) {
-		this.currentTotalBaggageWeight = totalBaggageWeight;
-	}
 	
-	public void addPassengerAndBaggage(float vol, float weight) {
-		
-		//computing whether the checked luggage is exceeding the per pax weight limit
-		float excess_weight = weight - this.getMaxBaggageWeight();
-		
+	public void addPassengerAndBaggage(float vol, float weight,float fee) {
 		//update weight and vol with this passenger's data
 		this.currentTotalBaggageWeight+=weight;
 		this.currentTotalBaggageVolume+=vol;
+		this.currentTotalFees+=fee;
 		
-		//if the difference above is positive, the weight is exceeding
-		if (excess_weight>0)
-		{
-			//compute the fees only on the difference of weight
-			this.currentTotalFees+=this.getFeeMultplier()*excess_weight;
-		}
 		//add a passenger to the current count
 		this.currentTotalPassengers++;
-
-		
 		//TODO: do we apply the excess (and fee) to the volume too?
 	}
 	
@@ -179,40 +99,78 @@ public class Flight {
 	}
 
 
-	/**
-	 * @return the maxTotalBaggageVolume
-	 */
-	public float getMaxTotalBaggageVolume() {
-		return maxTotalBaggageVolume;
-	}
-
-	/**
-	 * @param maxTotalBaggageVolume the maxTotalBaggageVolume to set
-	 */
-	protected void setMaxTotalBaggageVolume(float maxTotalBaggageVolume) {
-		this.maxTotalBaggageVolume = maxTotalBaggageVolume;
-	}
-
-	/**
-	 * @return the maxTotalBaggageWeight
-	 */
-	public float getMaxTotalBaggageWeight() {
-		return maxTotalBaggageWeight;
-	}
-
-	/**
-	 * @param maxTotalBaggageWeight the maxTotalBaggageWeight to set
-	 */
-	protected void setMaxTotalBaggageWeight(float maxTotalBaggageWeight) {
-		this.maxTotalBaggageWeight = maxTotalBaggageWeight;
-	}
+	
+	
+	
 	
 	public boolean hasExceeded()
 	{
 		//check whether any of the limits (passengers/weight/volume) is exceeding
-		return  (this.getCurrentTotalBaggageVolume() > this.getMaxTotalBaggageVolume()) ||
-				(this.getCurrentTotalBaggageWeight() > this.getMaxTotalBaggageWeight())||
+		return  (this.getCurrentTotalBaggageVolume() > this.getMaxBaggageVolume()) ||
+				(this.getCurrentTotalBaggageWeight() > this.getMaxBaggageWeight())||
 				(this.getCurrentTotalPassengers() > this.getPassengerCapacity());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// Please explain why any of this is here, and you can keep it 
+	
+	
+	public int getCurrentTotalPassengers()
+	{
+		return this.currentTotalPassengers;
+	}
+	public void setFlightCode(String flightCode) {
+		this.flightCode = flightCode;
+	}
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+	public void setCarrier(String carrier) {
+		this.carrier = carrier;
+	}
+	public void setPassengerCapacity(int passengerCapacity) {
+		this.passengerCapacity = passengerCapacity;
+	}
+	public void setMaxBaggageVolume(float maxBaggageVolume) {
+		this.maxBaggageVolume = maxBaggageVolume;
+	}
+	public void setFeeMultplier(float feeMultplier) {
+		this.feeMultplier = feeMultplier;
+	}
+	public void setMaxBaggageWeight(float maxBaggageWeight) {
+		this.maxBaggageWeight = maxBaggageWeight;
+	}
+	public void setCurrentTotalBaggageVolume(float totalBaggageVolume) {
+		this.currentTotalBaggageVolume = totalBaggageVolume;
+	}
+	public float getCurrentTotalBaggageVolume() {
+		return currentTotalBaggageVolume;
+	}
+
+	public float getCurrentTotalFees() {
+		return currentTotalFees;
+	}
+
+	public void setCurrentTotalFees(float totalFees) {
+		this.currentTotalFees = totalFees;
+	}
+
+	public float getCurrentTotalBaggageWeight() {
+		return currentTotalBaggageWeight;
+	}
+
+	public void setCurrentTotalBaggageWeight(float totalBaggageWeight) {
+		this.currentTotalBaggageWeight = totalBaggageWeight;
+	}
+	public float getFeeMultplier() {
+		return feeMultplier;
 	}
 
 }

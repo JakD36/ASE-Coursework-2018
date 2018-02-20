@@ -37,7 +37,6 @@ public class PassengerList {
 		}
 	}
 
-	// !!! IS THIS ALLOWED? !!! Im referring to passign hte entire hash map
 
 	//
 	public HashMap<String,Passenger> getNotCheckedIn(){
@@ -68,7 +67,7 @@ public class PassengerList {
 		if(checkedIn){
 			passengersCheckedIn.put(thePassenger.getBookingRefCode(),thePassenger);
 
-			thePassenger.getFlight().addPassengerAndBaggage(0,0); // Add to the number of passengers on this flight, there is no information on the baggage for these passengers
+			thePassenger.getFlight().addPassengerAndBaggage(0,0,0); // Add to the number of passengers on this flight, there is no information on the baggage for these passengers
 
 		}
 		else{
