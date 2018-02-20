@@ -1,15 +1,17 @@
 
 public class Flight {
+
 	//flight description
 	private String flightCode;
 	private String destination;
 	private String carrier;
 	
 	//limits per passengers
+
 	private float maxBaggageVolume;
 	private float maxBaggageWeight;
 	private float feeMultplier;
-	
+
 	//passengers/volume/weight up to date
 	private int   currentTotalPassengers;
 	private float currentTotalBaggageVolume;
@@ -24,6 +26,7 @@ public class Flight {
 	public Flight(String flightCode, String destination, String carrier,
 			float maxVol, float maxWeight,float feeMultiplier, 
 			int passengerCapacity,float totalBV, float totalBW) {
+
 		this.setFlightCode(flightCode);
 		this.setDestination(destination);
 		this.setCarrier(carrier);
@@ -31,6 +34,7 @@ public class Flight {
 		this.setMaxBaggageVolume(maxVol);
 		this.setMaxBaggageWeight(maxWeight);
 		this.setFeeMultplier(feeMultiplier);
+
 		this.setMaxTotalBaggageWeight(totalBW);
 		this.setMaxTotalBaggageVolume(totalBV);
 	}
@@ -38,6 +42,7 @@ public class Flight {
 	public int getCurrentTotalPassengers()
 	{
 		return this.currentTotalPassengers;
+
 	}
 
 	public String getFlightCode() {
@@ -96,6 +101,7 @@ public class Flight {
 		this.maxBaggageWeight = maxBaggageWeight;
 	}
 
+
 	public float getCurrentTotalBaggageVolume() {
 		return currentTotalBaggageVolume;
 	}
@@ -137,6 +143,7 @@ public class Flight {
 		}
 		//add a passenger to the current count
 		this.currentTotalPassengers++;
+
 		
 		//TODO: do we apply the excess (and fee) to the volume too?
 	}
@@ -145,19 +152,23 @@ public class Flight {
 	{
 		StringBuilder report = new StringBuilder();
 		
+
 		report.append(String.format("Flight code: %s\n",this.getFlightCode()));
 		report.append(String.format("Number of Passengers: %d\n", this.getCurrentTotalPassengers()));
 		report.append(String.format("Total Baggage Weight: %.2f\n", this.getCurrentTotalBaggageWeight()));
 		report.append(String.format("Total Baggage Volume: %.2f\n", this.getMaxBaggageVolume()));
 		report.append(String.format("Total Excess Fees: %.2f\n", this.getCurrentTotalFees()));
 		report.append(String.format("Exceeded: %s\n", this.hasExceeded() ? "yes" : "no"));
+
 		
 		return report.toString();
 	}
 	
 	public boolean equals(Object obj)
 	{
+
 		//two flights are equal if their flight codes are equal  (case-insensitive)
+
 		return (obj instanceof Flight) && (((Flight)obj).getFlightCode().toUpperCase().equals(this.getFlightCode().toUpperCase()));
 	}
 	
@@ -203,4 +214,5 @@ public class Flight {
 				(this.getCurrentTotalBaggageWeight() > this.getMaxTotalBaggageWeight())||
 				(this.getCurrentTotalPassengers() > this.getPassengerCapacity());
 	}
+
 }

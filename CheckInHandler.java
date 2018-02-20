@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 
+import javax.swing.text.DefaultStyledDocument.ElementSpec;
+
 public class CheckInHandler {
 	
 	private PassengerList passengers;
@@ -32,6 +34,7 @@ public class CheckInHandler {
 	 */
 	public boolean checkDetails(String bookingReference, String lastName) throws IllegalReferenceCodeException{
 		if( passengers.getNotCheckedIn().containsKey(bookingReference) ){	// Check that the booking reference provided matches, a passenger to be checked in
+
 			//Strings should compared with .equals in Java
 			if(passengers.getNotCheckedIn().get(bookingReference).getLastName().equals(lastName)){	// Checks if the passenger 
 				return true; // Return true to show that the details match with a passenger to be checked in.
@@ -45,8 +48,7 @@ public class CheckInHandler {
 		}
 		else{ // Throw an exception if there is no passenger that matches this booking reference code
 			throw new IllegalReferenceCodeException(bookingReference+": There is no booking reference on record.");
-		}
-		//return false; //Eclipse says this is unreachable
+    }
 	}
 
 	/**
@@ -62,6 +64,7 @@ public class CheckInHandler {
 	 */
 	public float processPassenger(String bookingReference, float[] dimensions, float weight) throws IllegalReferenceCodeException{
 		float fee;	// Fee due from passenger, calculated from the weight Fee, volume fee and the multiplier for the passengers flight
+
 		float weightFee = 0f, volFee = 0f;
 		float multiplier = 1f;
 
@@ -71,11 +74,12 @@ public class CheckInHandler {
 		
 		// Find the maximum baggage allowances for each passenger on that flight, 
 		// take into account some passengers may go beyond the limit!
+    
 		float maxWeight = (float) (( flight.getMaxBaggageWeight() / flight.getPassengerCapacity() )*0.8);
 		float maxVol = (float) (( flight.getMaxBaggageVolume() / flight.getPassengerCapacity() )*0.8);
 		
-		System.out.println("weight: " + weight + ", maxWeight: " + maxWeight);
-		System.out.println("volFee: " + volFee + ", maxVol: " + maxVol);
+// 		System.out.println("weight: " + weight + ", maxWeight: " + maxWeight);
+// 		System.out.println("volFee: " + volFee + ", maxVol: " + maxVol);
 		
 		// basic calculation to find the fees from the excess
 		weightFee = weight-maxWeight;
@@ -86,8 +90,10 @@ public class CheckInHandler {
 		if (volFee<0){ volFee = 0; }
 
 		fee = (weightFee+volFee)*multiplier;
-		System.out.println("weightFee: " + weightFee + ", volFee: " + volFee + 
-				"multiplier: " + multiplier + ", fee: " + fee);
+
+// 		System.out.println("weightFee: " + weightFee + ", volFee: " + volFee + 
+// 				"multiplier: " + multiplier + ", fee: " + fee);
+
 
 		if(passengers.checkInPassenger(bookingReference)){ // Attempt to check in the passenger
 			flight.addPassengerAndBaggage(vol,weight);	// If they are checked in add baggage, and incrememnt number of passengers
@@ -139,6 +145,7 @@ public class CheckInHandler {
 	 */
 	private void loadPassengers() {
 		File f = new File("passengers.txt");
+
 		Scanner scanner;
 		
 		try {
@@ -157,6 +164,7 @@ public class CheckInHandler {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
 		}
 	}
 	
@@ -166,6 +174,7 @@ public class CheckInHandler {
 	 */
 	private void loadFlights() {
 		File f = new File("flight.txt");
+
 		Scanner scanner;
 		
 		//instantiate Flight HashMap

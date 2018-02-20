@@ -30,8 +30,10 @@ public class PassengerList {
 		}else if((output = passengersNotCheckedIn.get(bookingRefCode)) != null){
 			return output;
 		}else{
+
 			throw new IllegalReferenceCodeException
 			("There is no passenger with this reference code: "+bookingRefCode);
+
 		}
 	}
 
@@ -65,7 +67,9 @@ public class PassengerList {
 		// if the method hasn't been stopped from the return above, then we can add the passenger to the right hashmap
 		if(checkedIn){
 			passengersCheckedIn.put(thePassenger.getBookingRefCode(),thePassenger);
+
 			thePassenger.getFlight().addPassengerAndBaggage(0,0); // Add to the number of passengers on this flight, there is no information on the baggage for these passengers
+
 		}
 		else{
 			passengersNotCheckedIn.put(thePassenger.getBookingRefCode(),thePassenger);

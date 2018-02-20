@@ -257,6 +257,7 @@ public class GUI extends JFrame implements ActionListener
 			//try to check user in
 			try {			
 				//try to check in
+
 				boolean matches = checkInHandler.checkDetails(bookingRef, lastName);
 				
 				//if the booking ref exists and matches the surname, proceed
@@ -281,7 +282,7 @@ public class GUI extends JFrame implements ActionListener
 					//if there are baggage fees, inform user
 					else {
 						//format string to 2dp and use red colouring
-						String feeString = String.format("£%.2f", fees);
+						String feeString = String.format("Â£%.2f", fees);
 						
 						lblResponse.setText("<html>User checked in. "
 								+ "Collect baggage fee: <font color = 'red'>"
@@ -293,6 +294,7 @@ public class GUI extends JFrame implements ActionListener
 					lblResponse.setText("<html><font color = 'red'>"
 							+ "Booking Reference does not match surname!"
 							+ "</font></html>");
+
 				}
 			//if the user presses cancel on the input dialog, a 
 			//NullPointerException is thrown
@@ -301,11 +303,13 @@ public class GUI extends JFrame implements ActionListener
 				lblResponse.setText("<html><font color = 'red'>"
 						+ "Check In Cancelled!</font></html>");
 			//this exception is thrown by CheckInHandler if check in
+
 			//booking ref does not exist
 			} catch(IllegalReferenceCodeException e) {
 				//inform user
 				lblResponse.setText("<html><font color = 'red'>" + e.getMessage()
 				+ "</font></html>");
+
 			}
 		}
 	}
