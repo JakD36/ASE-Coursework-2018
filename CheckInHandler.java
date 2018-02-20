@@ -79,11 +79,6 @@ public class CheckInHandler {
 		if (volFee<0){ volFee = 0; }
 
 		fee = (weightFee+volFee)*multiplier;
-<<<<<<< HEAD
-		System.out.println("weightFee: " + weightFee + ", volFee: " + volFee + 
-				"multiplier: " + multiplier + ", fee: " + fee);
-=======
->>>>>>> Jack
 
 		if(passengers.checkInPassenger(bookingReference)){ // Attempt to check in the passenger
 			flight.addPassengerAndBaggage(vol,weight,fee);	// If they are checked in add baggage, and incrememnt number of passengers
@@ -134,32 +129,9 @@ public class CheckInHandler {
 		} catch (FileNotFoundException e) {
 		}
 		
-		
-<<<<<<< HEAD
 		//return for GUI
 		return finalReport;
 
-=======
-		//added try catch
-		try {
-			scanner = new Scanner(f);
-			while (scanner.hasNextLine()) {     
-				String inputLine = scanner.nextLine();   //do something with this line     
-				String parts[] = inputLine.split(",");
-				//changed to put
-				flights.put(parts[0], new Flight(parts[0],
-						parts[1],
-						parts[2],
-						Integer.parseInt(parts[3]),
-						Float.parseFloat(parts[4]),
-						Float.parseFloat(parts[5]),
-						Float.parseFloat(parts[6])
-					));
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
->>>>>>> Jack
+
 	}
 }
