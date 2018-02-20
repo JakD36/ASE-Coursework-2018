@@ -3,6 +3,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,7 +24,7 @@ import javax.swing.border.EtchedBorder;
  * @cite https://docstore.mik.ua/orelly/java/exp/ch12_05.htm
  * @cite https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
  */
-public class GUI extends JFrame implements ActionListener
+public class GUI extends JFrame implements ActionListener, WindowListener
 {
 
 	private static final long serialVersionUID = 1L;
@@ -42,12 +45,13 @@ public class GUI extends JFrame implements ActionListener
 		new GUI();
 	}
 	
+
 	public GUI() {
+		//add window listener to generate report and terminate program
+		this.addWindowListener(this);		
+		
 		//prevent resizing
 		this.setResizable(false);
-		
-		//tell program to end when this window is closed
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//set the title
 		this.setTitle("Passenger Check-In Application");
@@ -177,7 +181,18 @@ public class GUI extends JFrame implements ActionListener
 		
 		//create a CheckInHandler to load and process
 		//Passengers and their Flights
-		checkInHandler = new CheckInHandler();
+		try {
+			checkInHandler = new CheckInHandler();
+		} catch (IllegalReferenceCodeException e) {
+			//warn user of invalid booking ref in csv file
+			JOptionPane.showMessageDialog(this, 
+					e.getMessage(),
+					"Invalid booking ref in CSV file.",
+					JOptionPane.ERROR_MESSAGE);
+			
+			//terminate program
+			System.exit(0);
+		}
 	}
 	
 	/**
@@ -231,16 +246,16 @@ public class GUI extends JFrame implements ActionListener
 		//determine source of event
 		//if event is btnCheckIn click, attempt to check passenger in
 		if(arg0.getSource() == btnCheckIn) {
-			//make booking ref uppercase
+			//make booking ref lowercase
 			txtBookingRef.setText
-				(txtBookingRef.getText().toUpperCase());
+				(txtBookingRef.getText().toLowerCase());
 			
 			//get and validate user input
 			String bookingRef = txtBookingRef.getText();
 			String lastName = txtSurname.getText();
 			
 			//if booking ref is invalid, inform user and return
-			if(!bookingRef.matches("[A-Z]{3}[0-9]{4}")) {
+			if(!bookingRef.matches("[a-z]{3}[0-9]{4}")) {
 				lblResponse.setText("<html><font color = 'red'>"
 						+ "Invalid booking reference!</font>"
 						+ "</html>");
@@ -257,7 +272,6 @@ public class GUI extends JFrame implements ActionListener
 			//try to check user in
 			try {			
 				//try to check in
-
 				boolean matches = checkInHandler.checkDetails(bookingRef, lastName);
 				
 				//if the booking ref exists and matches the surname, proceed
@@ -282,7 +296,7 @@ public class GUI extends JFrame implements ActionListener
 					//if there are baggage fees, inform user
 					else {
 						//format string to 2dp and use red colouring
-						String feeString = String.format("Â£%.2f", fees);
+						String feeString = String.format("£%.2f", fees);
 						
 						lblResponse.setText("<html>User checked in. "
 								+ "Collect baggage fee: <font color = 'red'>"
@@ -294,7 +308,6 @@ public class GUI extends JFrame implements ActionListener
 					lblResponse.setText("<html><font color = 'red'>"
 							+ "Booking Reference does not match surname!"
 							+ "</font></html>");
-
 				}
 			//if the user presses cancel on the input dialog, a 
 			//NullPointerException is thrown
@@ -302,15 +315,60 @@ public class GUI extends JFrame implements ActionListener
 				//user has cancelled check in, so update status
 				lblResponse.setText("<html><font color = 'red'>"
 						+ "Check In Cancelled!</font></html>");
+				e.printStackTrace();
 			//this exception is thrown by CheckInHandler if check in
-
 			//booking ref does not exist
 			} catch(IllegalReferenceCodeException e) {
 				//inform user
 				lblResponse.setText("<html><font color = 'red'>" + e.getMessage()
 				+ "</font></html>");
-
 			}
 		}
+	}
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	/**
+	 * Code triggered when GUI is closed.
+	 */
+	public void windowClosing(WindowEvent arg0) {
+		JOptionPane.showMessageDialog(this, 
+				"Report: \n" + checkInHandler.generateReports());
+		System.exit(0);
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

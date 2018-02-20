@@ -71,12 +71,12 @@ public class PassengerTest {
 	
 	@Test
 	/**
-	 * Test that Passenger constructor converts chars to upper case
+	 * Test that Passenger has valid booking ref
 	 */
 	public void testPassengerConstructorBookingRef2() {
 		assertTrue("Passenger booking ref should follow pattern of "
-				+ "three uppercase letters followed by 4 numbers",
-				passenger5.getBookingRefCode().matches("[A-Z]{3}[0-9]{4}"));
+				+ "three lowercase letters followed by 4 numbers",
+				passenger5.getBookingRefCode().matches("[a-z]{3}[0-9]{4}"));
 	}
 	
 	@Test

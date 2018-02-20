@@ -1,10 +1,18 @@
 public class Passenger {
-private String bookingRefCode;
-private String firstName;
-private String lastName;
-Flight flight;
+	private String bookingRefCode;
+	private String firstName;
+	private String lastName;
+	Flight flight;
 
-public Passenger(String bookingRefCode, String firstName, String lastName, Flight flight) {
+	public Passenger(String bookingRefCode, String firstName, String lastName, Flight flight) 
+		throws IllegalReferenceCodeException {
+	//validate booking ref code
+	if(!bookingRefCode.matches("[a-z]{3}[0-9]{4}")) {
+		//if it fails throw an exception
+		throw new IllegalReferenceCodeException
+		("Illegal booking reference passed to constructor: " + bookingRefCode);
+	}
+		
 	this.setBookingRefCode(bookingRefCode);
 	this.setFirstName(firstName);
 	this.setLastName(lastName);
@@ -42,7 +50,6 @@ public Passenger(String bookingRefCode, String firstName, String lastName, Fligh
 	public void setFlight(Flight flight) {
 		this.flight = flight;
 		}
-	
 	
 	public boolean equals(Object obj)
 	{

@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 
 public class PassengerList {
@@ -6,12 +9,48 @@ public class PassengerList {
 	private HashMap<String,Passenger> passengersNotCheckedIn;
 	
 	/**
-	 * Default constructor for the PassengerList.
+	 * Constructs a new PassengerList and invoke loadPassengers();
+	 * 
+	 * FlightList reference required for getting references to
+	 * relevant Flights.
+	 * 
+	 * @param flights
 	 */
-	public PassengerList() {
+	public PassengerList(FlightList flights) throws IllegalReferenceCodeException  {
 		//instantiate HashMaps
 		passengersCheckedIn = new HashMap<String,Passenger>();
 		passengersNotCheckedIn =new  HashMap<String,Passenger>();
+		
+		loadPassengers(flights);
+	}
+	
+	/**
+	 * Loads the passengers from the comma separated txt file.
+	 * REQUIRES Load flights to already exist
+	 * Parses each line of the text file as a different passenger, and adds them to the collection of passengers.
+	 */
+	public void loadPassengers(FlightList flights) throws IllegalReferenceCodeException  {
+		File f = new File("passengers.txt");
+		Scanner scanner;
+		
+		try {
+			scanner = new Scanner(f);
+			
+			while (scanner.hasNextLine()) {     
+				String inputLine = scanner.nextLine();   
+				String parts[] = inputLine.split(",");
+
+				this.add(new Passenger(
+					parts[0], // Booking reference code
+					parts[1], // First name
+					parts[2], // Last name
+					flights.get(parts[3])),	// Use flight code to link to the flight object
+					Boolean.parseBoolean(parts[4])); // Whether the passenger is already checked in
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -30,10 +69,8 @@ public class PassengerList {
 		}else if((output = passengersNotCheckedIn.get(bookingRefCode)) != null){
 			return output;
 		}else{
-
 			throw new IllegalReferenceCodeException
 			("There is no passenger with this reference code: "+bookingRefCode);
-
 		}
 	}
 
@@ -67,9 +104,7 @@ public class PassengerList {
 		// if the method hasn't been stopped from the return above, then we can add the passenger to the right hashmap
 		if(checkedIn){
 			passengersCheckedIn.put(thePassenger.getBookingRefCode(),thePassenger);
-
 			thePassenger.getFlight().addPassengerAndBaggage(0,0); // Add to the number of passengers on this flight, there is no information on the baggage for these passengers
-
 		}
 		else{
 			passengersNotCheckedIn.put(thePassenger.getBookingRefCode(),thePassenger);
