@@ -8,7 +8,7 @@ public class Flight {
 	//limits per passengers
 	private float maxBaggageVolume;
 	private float maxBaggageWeight;
-	private float feeMultplier;
+	private float feeMultiplier;
 	
 	//passengers/volume/weight up to date
 	private int   currentTotalPassengers;
@@ -28,14 +28,12 @@ public class Flight {
 		this.passengerCapacity = passengerCapacity;
 		this.maxBaggageVolume = maxVol;
 		this.maxBaggageWeight = maxWeight;
-		this.feeMultplier = feeMultiplier;
+		this.feeMultiplier = feeMultiplier;
 
 		this.currentTotalPassengers = 0;
 		this.currentTotalBaggageVolume = 0;
 		this.currentTotalBaggageWeight = 0;
 		this.currentTotalFees = 0;
-
-
 	}
 	
 	public String getFlightCode() {
@@ -60,6 +58,10 @@ public class Flight {
 
 	public String getCarrier() {
 		return carrier;
+	}
+
+	public float getFeeMultiplier(){
+		return feeMultiplier;
 	}
 	
 	public void addPassengerAndBaggage(float vol, float weight,float fee) {

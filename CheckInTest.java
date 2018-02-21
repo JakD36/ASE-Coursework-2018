@@ -1,12 +1,7 @@
+import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import org.mockito.Mockito;
 
 public class CheckInTest {
 	

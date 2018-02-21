@@ -64,7 +64,7 @@ public class CheckInHandler {
 		float vol = dimensions[0]*dimensions[1]*dimensions[2]; // Calculate the volume of the baggage
 		
 		Flight flight = passengers.get(bookingReference).getFlight(); // Get the information on the flight the passenger is going on
-		
+		multiplier = flight.getFeeMultiplier();
 		// Find the maximum baggage allowances for each passenger on that flight, 
 		// take into account some passengers may go beyond the limit!
 		float maxWeight = (float) (( flight.getMaxBaggageWeight() / flight.getPassengerCapacity() )*0.8);
