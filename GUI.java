@@ -291,8 +291,14 @@ public class GUI extends JFrame implements ActionListener, WindowListener
 							checkInHandler.processPassenger(bookingRef, dimensions, weight);
 					
 					//if there are no baggage fees, inform user
-					if(fees <= 0)
+					if(fees == 0)
 						lblResponse.setText("User checked in. Baggage ok.");
+					//check for error code
+					else if(fees == -1) {
+						lblResponse.setText("<html><font color = 'red'>" +
+								"Check in error." +
+								"</font></html>");
+					}
 					//if there are baggage fees, inform user
 					else {
 						//format string to 2dp and use red colouring
