@@ -42,7 +42,7 @@ public class CheckInHandler {
 		else{ // Throw an exception if there is no passenger that matches this booking reference code
 			throw new IllegalReferenceCodeException(bookingReference+": There is no booking reference on record.");
 		}
-		//return false; //Eclipse says this is unreachable
+		
 	}
 
 	/**
