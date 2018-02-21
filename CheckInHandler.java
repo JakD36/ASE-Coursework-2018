@@ -53,7 +53,7 @@ public class CheckInHandler {
 	 * @param	bookingReference	The booking reference of the passenger to be processed
 	 * @param	dimensions			The width, height and depth of the baggage in a single array.
 	 * @param	weight				The weight of the passengers baggage.
-	 * @return 	The fee due from the passenger for any excesses on the baggage.
+	 * @return 	The fee due from the passenger for any excesses on the baggage, -1 represents there was an error with check in
 	 * @throws	IllegalReferenceCodeException	If there is no passenger with a matching booking reference code.
 	 */
 	public float processPassenger(String bookingReference, float[] dimensions, float weight) throws IllegalReferenceCodeException{
@@ -62,6 +62,13 @@ public class CheckInHandler {
 		float multiplier = 1f;
 
 		float vol = dimensions[0]*dimensions[1]*dimensions[2]; // Calculate the volume of the baggage
+		
+		// Cant have a negative value for a scalar like weight or volume, so it is assumed for now that this was a mistake
+		// So the value will be taken, could throw an exception and request user to try again
+		
+		if(vol<0) {vol*=-1;}
+		if(weight<0) {weight*=-1;}
+		
 		
 		Flight flight = passengers.get(bookingReference).getFlight(); // Get the information on the flight the passenger is going on
 		multiplier = flight.getFeeMultiplier();
@@ -77,16 +84,16 @@ public class CheckInHandler {
 		// If the passengers baggage is below the maximums, no fee is applied,
 		if (weightFee<0){ weightFee = 0; }
 		if (volFee<0){ volFee = 0; }
-
+		
 		fee = (weightFee+volFee)*multiplier;
-
+		
 		if(passengers.checkInPassenger(bookingReference)){ // Attempt to check in the passenger
 			flight.addPassengerAndBaggage(vol,weight,fee);	// If they are checked in add baggage, and incrememnt number of passengers
 		}
-//		else{
-//			// If for some reason the passenger cannot be checked in, we need to return an error
-//			fee = -1; 																// Please get back to me on this on what you think, as this fails a test!
-//		}
+		else{
+			// If for some reason the passenger cannot be checked in, we need to return an error
+			fee = -1; 																// Please get back to me on this on what you think, as this fails a test!
+		}
 
 		// Output the final fee due from the passenger,
 		return fee;
@@ -118,7 +125,7 @@ public class CheckInHandler {
 		//		Capacity Exceeded: yes/no
 		String finalReport = "";
 		for(Flight f: flights.getValues()){
-			finalReport += f.generateReport()+"\n\n";
+			finalReport += f.generateReport()+"\n";
 		}
 		
 		//write to file
