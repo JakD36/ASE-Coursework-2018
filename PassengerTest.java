@@ -52,10 +52,6 @@ public class PassengerTest {
 		//different ref to passenger1, but same name and flight
 		passenger4 = new Passenger(bookingRef2, 
 				firstName1, lastName1, flight1);
-		
-		//uppercase booking ref
-		passenger5 = new Passenger("ABC1234", 
-				firstName1, lastName1, flight1);
 	}
 	
 	@Test
@@ -69,14 +65,14 @@ public class PassengerTest {
 				passenger1.getBookingRefCode());
 	}
 	
-	@Test
+	@Test (expected = IllegalReferenceCodeException.class)
 	/**
-	 * Test that Passenger has valid booking ref
+	 * Test that Passenger throws an IllegalBookingReferenceException
 	 */
 	public void testPassengerConstructorBookingRef2() {
-		assertTrue("Passenger booking ref should follow pattern of "
-				+ "three lowercase letters followed by 4 numbers",
-				passenger5.getBookingRefCode().matches("[a-z]{3}[0-9]{4}"));
+		//illegal uppercase booking ref
+		passenger5 = new Passenger("ABC1234", 
+				firstName1, lastName1, flight1);
 	}
 	
 	@Test
@@ -88,6 +84,7 @@ public class PassengerTest {
 	public void testPassengerConstructorFirstName() {
 		assertEquals("first name mismatch", firstName1, 
 				passenger1.getFirstName());
+		
 	}
 	
 	@Test
@@ -112,16 +109,6 @@ public class PassengerTest {
 				passenger1.getFlight());
 	}
 	
-	
-	@Test
-	/**
-	 * Test that hash of a Passenger is the same
-	 * as the hash of its bookingRef
-	 */
-	public void testHash1() {
-		assertEquals("Hash mismatch", bookingRef1.hashCode(),
-				passenger1.hashCode());
-	}
 	
 	@Test
 	/**
