@@ -1,5 +1,10 @@
+package ase1;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+
+import ase1.data.Flight;
+import ase1.data.FlightList;
+import ase1.data.PassengerList;
 
 public class CheckInHandler {
 	

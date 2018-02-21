@@ -1,7 +1,11 @@
+package ase1.tests;
+
 import org.junit.*;
+
+import ase1.CheckInHandler;
+
 import static org.junit.Assert.*;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+
 
 public class CheckInTest {
 	

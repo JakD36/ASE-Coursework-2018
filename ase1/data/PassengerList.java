@@ -1,7 +1,12 @@
+package ase1.data;
+
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
+
+import ase1.IllegalReferenceCodeException;
 
 
 public class PassengerList {
