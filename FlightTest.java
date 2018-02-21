@@ -171,11 +171,11 @@ import static org.junit.jupiter.api.Assertions.*;
 		  //split the string around "Total Baggage Weight: "
 		  String[] parts = report.split("Total Baggage Weight: ");
 		  
-		  //get the content after "Passengers: " up to the end of the line
-		  String passengerString = parts[1].substring(0, parts[1].indexOf("\n"));
+		  //get the content after "Total Baggage Weight: " up to the end of the line
+		  String baggageWeightString = parts[1].substring(0, parts[1].indexOf("\n"));
 		  
 		  //check that the extracted value is correct
-		  assertTrue(passengerString.equals("40.00"));
+		  assertTrue(baggageWeightString.equals("40.00"));
 	  }
 	  
 	  @Test
@@ -190,10 +190,10 @@ import static org.junit.jupiter.api.Assertions.*;
 		  String[] parts = report.split("Total Baggage Volume: ");
 		  
 		  //get the content after "Total Baggage Volume: " up to the end of the line
-		  String passengerString = parts[1].substring(0, parts[1].indexOf("\n"));
+		  String baggageVolString = parts[1].substring(0, parts[1].indexOf("\n"));
 		  
 		  //check that the extracted value is correct
-		  assertTrue(passengerString.equals("79.00"));
+		  assertTrue(baggageVolString.equals("79.00"));
 	  }
 	  
 	  @Test
@@ -208,10 +208,10 @@ import static org.junit.jupiter.api.Assertions.*;
 		  String[] parts = report.split("Total Excess Fees: ");
 		  
 		  //get the content after "Total Excess Fees: " up to the end of the line
-		  String passengerString = parts[1].substring(0, parts[1].indexOf("\n"));
+		  String excessString = parts[1].substring(0, parts[1].indexOf("\n"));
 		  
 		  //check that the extracted value is correct
-		  assertTrue(passengerString.equals("10.00"));
+		  assertTrue(excessString.equals("10.00"));
 	  }
 	  
 	  @Test
@@ -226,10 +226,10 @@ import static org.junit.jupiter.api.Assertions.*;
 		  String[] parts = report.split("Exceeded: ");
 		  
 		  //get the content after "Exceeded: " up to the end of the line
-		  String passengerString = parts[1].substring(0, parts[1].indexOf("\n"));
+		  String exceededString = parts[1].substring(0, parts[1].indexOf("\n"));
 		  
 		  //check that the extracted value is correct
-		  assertTrue(passengerString.equals("yes"));
+		  assertTrue(exceededString.equals("yes"));
 	  }
 	  
 	  @Test
@@ -244,9 +244,9 @@ import static org.junit.jupiter.api.Assertions.*;
 		  String[] parts = report.split("Exceeded: ");
 		  
 		  //get the content after "Exceeded: " up to the end of the line
-		  String passengerString = parts[1].substring(0, parts[1].indexOf("\n"));
+		  String exceededString = parts[1].substring(0, parts[1].indexOf("\n"));
 		  
 		  //check that the extracted value is correct
-		  assertTrue(passengerString.equals("no"));
+		  assertTrue(exceededString.equals("no"));
 	  }
  }
