@@ -79,8 +79,10 @@ public class CheckInHandler {
 		multiplier = flight.getFeeMultiplier();
 		// Find the maximum baggage allowances for each passenger on that flight, 
 		// take into account some passengers may go beyond the limit!
-		float maxWeight = (float) (( flight.getMaxBaggageWeight() / flight.getPassengerCapacity() )*0.8);
-		float maxVol = (float) (( flight.getMaxBaggageVolume() / flight.getPassengerCapacity() )*0.8);
+
+		float factorOfSafety = 0.8f;
+		float maxWeight = (float) (( flight.getMaxBaggageWeight() / flight.getPassengerCapacity() )*factorOfSafety);
+		float maxVol = (float) (( flight.getMaxBaggageVolume() / flight.getPassengerCapacity() )*factorOfSafety);
 		
 		// basic calculation to find the fees from the excess
 		weightFee = weight-maxWeight;
