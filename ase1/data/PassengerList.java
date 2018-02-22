@@ -3,6 +3,7 @@ package ase1.data;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -25,8 +26,11 @@ public class PassengerList {
 		//instantiate HashMaps
 		passengersCheckedIn = new HashMap<String,Passenger>();
 		passengersNotCheckedIn =new  HashMap<String,Passenger>();
-		
-		loadPassengers(flights);
+		try{
+			loadPassengers(flights);
+		}catch(IllegalReferenceCodeException e){
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	/**
@@ -40,17 +44,22 @@ public class PassengerList {
 		
 		try {
 			scanner = new Scanner(f);
-			
+			ArrayList<String> duplicates = new ArrayList<String>();
 			while (scanner.hasNextLine()) {     
 				String inputLine = scanner.nextLine();   
 				String parts[] = inputLine.split(",");
 
-				this.add(new Passenger(
+				if(!this.add(new Passenger(
 					parts[0], // Booking reference code
 					parts[1], // First name
 					parts[2], // Last name
 					flights.get(parts[3])),	// Use flight code to link to the flight object
-					Boolean.parseBoolean(parts[4])); // Whether the passenger is already checked in
+					Boolean.parseBoolean(parts[4]))){ // Whether the passenger is already checked in
+						duplicates.add(parts[0]);
+					}
+			}
+			if(duplicates.size()>0){
+				throw new IllegalReferenceCodeException("Duplicate ids were found in input:"+duplicates);
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

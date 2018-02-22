@@ -99,7 +99,8 @@ public class CheckInHandler {
 		}
 		else{
 			// If for some reason the passenger cannot be checked in, we need to return an error
-			fee = -1; 																// Please get back to me on this on what you think, as this fails a test!
+			throw new IllegalReferenceCodeException
+			("There is no passenger with this booking reference to be checked in: "+bookingReference);
 		}
 
 		// Output the final fee due from the passenger,
