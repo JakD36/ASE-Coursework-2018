@@ -100,7 +100,7 @@ public class CheckInHandler {
 		else{
 			// If for some reason the passenger cannot be checked in, we need to return an error
 			throw new IllegalReferenceCodeException
-			("There is no passenger with this booking reference to be checked in: "+bookingReference);
+			("There is no passenger with this booking reference to be checked in,\n they may be already checked in: "+bookingReference);
 		}
 
 		// Output the final fee due from the passenger,

@@ -3,6 +3,7 @@ package ase1.tests;
 import org.junit.*;
 
 import ase1.CheckInHandler;
+import ase1.IllegalReferenceCodeException;
 
 import static org.junit.Assert.*;
 
@@ -17,23 +18,17 @@ public class CheckInTest {
 
 	@Before
 	/**
-	 * Instantiate the CheckInHandler object desk
+	 * Instantiate the CheckInHandler object desk.
+	 * To be used through all the tests for this class.
 	 */
 	public void setUp() throws Exception {
 		desk = new CheckInHandler(); 
 	}
 
-//	Check fees dont drop below zero
-//	Check neg weight is added
-//	check neg volume is added
-//	check passenger is added
-//	check passenger is removed from to be checked in map
-
-	
-	
 	@Test
 	/**
-	 * 
+	 * Check negative weight does not corrupt fee calculation.
+	 * It is expected that the weight should be corrected to be a positive value and therefore return a fee above or equal to 0.
 	 */
 	public void negativeWeight() {
 		float[] dimensions = {0.4f,1,1};
@@ -44,7 +39,8 @@ public class CheckInTest {
 	
 	@Test
 	/**
-	 * 
+	 * Check negative volume does not corrupt fee calculation.
+	 * It is expected that the volume should be corrected to positive value and therefore return a fee above or equal to 0.
 	 */
 	public void negativeVol() {
 		float[] dimensions = {-10.4f,1,1};
@@ -55,7 +51,12 @@ public class CheckInTest {
 	
 	@Test
 	/**
-	 * 
+	 * The passenger should not be charged if the luggage is within the allowance, and the airline 
+	 * should not owe the passenger money for being under allowance.
+	 * dav0001 is on KLM1234 who have a max of 10 kg and 10 m3 each.
+	 * with the factor of safety of 80% and the passenger maxes being 
+	 * calculated by dividing flight max values by pasenger capacity.
+	 * The allowance per passenger on KLM1234 is 0.4 kg and 0.4 m3.
 	 */
 	public void negativeFeesTest() {
 		float[] dimensions = {0.3f,1,1};
@@ -66,10 +67,12 @@ public class CheckInTest {
 	
 	@Test
 	/**
-	 * Fees are calculated as 80% of the max / passenger capacity
-	 * Then summed together
-	 * For flight KLM1234 10 m3 and 10 kg are maxs therefore 0.4 m3 and 0.4 kg are the max for each passenger, 
-	 * so we should have 0 fee for these values 
+	 * A passenger should not be charged for using their exact allowance.
+	 * dav0001 is on KLM1234 who have a max of 10 kg and 10 m3 each.
+	 * with the factor of safety of 80% and the passenger maxes being 
+	 * calculated by dividing flight max values by pasenger capacity.
+	 * The allowance per passenger on KLM1234 is 0.4 kg and 0.4 m3. 
+	 * Therefore providing these as inputs the fee is expected to be 0.
 	 */
 	public void NoFeesTest() {
 		float[] dimensions = {0.4f,1,1};
@@ -80,11 +83,15 @@ public class CheckInTest {
 	
 	@Test
 	/**
-	 * Fees are calculated as 80% of the max / passenger capacity
-	 * Then summed together
-	 * For flight KLM1234 10 m3 and 10 kg are maxs therefore 0.4 m3 and 0.4 kg are the max for each passenger, 
-	 * There is a fee multiplier of 2 for KLM1234, so the sum of the two excesses above the max * 2 gives us the fee
-	 * So 1.4 kg and 1.4 m3 should give 1 excess each, giving a total fee of 4
+	 * Test to make sure that passengers are fined the correct amount.
+	 * Test provides 1 kg over allowance and 1 m3 over allowance for simplicity.
+	 * Fee is defined as sum of excess times by the multiplier which for klm1234 is 2.
+	 * Therefore the resulting fee should be 4.
+	 * 
+	 * dav0001 is on KLM1234 who have a max of 10 kg and 10 m3 each.
+	 * with the factor of safety of 80% and the passenger maxes being 
+	 * calculated by dividing flight max values by pasenger capacity.
+	 * The allowance per passenger on KLM1234 is 0.4 kg and 0.4 m3.
 	 */
 	public void CheckFeeCalcTest() {
 		float[] dimensions = {1.4f,1,1};
@@ -95,12 +102,15 @@ public class CheckInTest {
 
 	@Test
 	/**
-	 * Fees are calculated as 80% of the max / passenger capacity
-	 * Then summed together
-	 * For flight KLM1234 10 m3 and 10 kg are maxs therefore 0.4 m3 and 0.4 kg are the max for each passenger, 
-	 * There is a fee multiplier of 2 for KLM1234, so the sum of the two excesses above the max * 2 gives us the fee
-	 * So 0.9 kg and 0.9 m3 should give 0.5 excess each, giving a total fee of 1
-	 * This test was added to look into if the floats are an issue for accuracy
+	 * Test to make sure that passengers are fined the correct amount.
+	 * Test provides 0.5 kg over allowance and 0.5 m3 over allowance for simplicity.
+	 * Fee is defined as sum of excess times by the multiplier which for klm1234 is 2.
+	 * Therefore the resulting fee should be 2.
+	 * 
+	 * dav0001 is on KLM1234 who have a max of 10 kg and 10 m3 each.
+	 * with the factor of safety of 80% and the passenger maxes being 
+	 * calculated by dividing flight max values by pasenger capacity.
+	 * The allowance per passenger on KLM1234 is 0.4 kg and 0.4 m3.
 	 */
 	public void CheckFeeCalcTest2() {
 		float[] dimensions = {0.9f,1,1};
@@ -112,7 +122,10 @@ public class CheckInTest {
 
 	@Test
 	/**
-	 * Make sure passengers are actually deducted from the to be checked in list, when they are processed
+	 * Make sure passengers are actually deducted from the to be checked in list, 
+	 * when they are processed.
+	 * Tested by checking the number of passengers to be checked in before they are processed and after.
+	 * The difference should be 1.
 	 */
 	public void passengerCheckedInTest() {
 		float[] dimensions = {0.9f,1f,1f};
@@ -126,9 +139,12 @@ public class CheckInTest {
 		assertTrue( (initialCount-afterCount) == 1);
 	}
 	
-	@Test
+	@Test(expected = IllegalReferenceCodeException.class)
 	/**
-	 * Try check in same passenger twice
+	 * Test to see if passenger can be checked in twice and deducted twice.
+	 * It is attempted to check in the passenger twice, however the method should not 
+	 * allow this, and the difference in passengers left to be checked in before and after 
+	 * should only be 1.
 	 */
 	public void passengerCheckedInTest2() {
 		float[] dimensions = {0.9f,1f,1f};
@@ -139,26 +155,27 @@ public class CheckInTest {
 		desk.processPassenger("dav0001",dimensions,weight);
 		
 		int afterCount = desk.getNumToCheckIn();
-		
 		// Should only lower count by 1 as the same passenger shouldnt be able to be processed twice
 		assertTrue( (initialCount-afterCount) == 1);
 	}
 	
 	@Test
 	/**
-	 * Try check in same passenger twice
+	 * Test to make sure an exception is thrown, when passenger is attempted to be checked in twice.
+	 * Simply checks the exception caught contains the booking reference of the duplicated passenger.
+	 * 
 	 */
 	public void passengerCheckedInTest3() {
 		float[] dimensions = {0.9f,1f,1f};
 		float weight = 0.9f;
-		int initialCount = desk.getNumToCheckIn();
 		
-		desk.processPassenger("dav0001",dimensions,weight);
-		desk.processPassenger("dav0001",dimensions,weight);
-		
-		int afterCount = desk.getNumToCheckIn();
-		
-		// Should only lower count by 1 as the same passenger shouldnt be able to be processed twice
-		assertTrue( (initialCount-afterCount) == 1);
+		try {
+			desk.processPassenger("dav0001",dimensions,weight);
+			desk.processPassenger("dav0001",dimensions,weight);
+		}
+		catch(IllegalReferenceCodeException e) {
+			assertTrue(e.getMessage().contains("dav0001"));
+		}
 	}
+
 }
