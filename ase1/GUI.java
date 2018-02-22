@@ -225,8 +225,8 @@ public class GUI extends JFrame implements ActionListener, WindowListener
 
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(this, 
-						"Invalid Width. Please reenter.",
-						"Invalid width",
+						"Invalid " + name + ". Please reenter.",
+						"Invalid " + name,
 						JOptionPane.ERROR_MESSAGE);
 			} catch (NullPointerException e) {
 				return -1;
