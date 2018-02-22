@@ -21,10 +21,9 @@ import javax.swing.border.EtchedBorder;
  * Program entry point. Contains main method, which creates
  * an instance of this GUI class.
  * 
- * references:
- * https://docs.oracle.com/javase/tutorial/uiswing/layout/grid.html
- * https://docstore.mik.ua/orelly/java/exp/ch12_05.htm
- * https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
+ * @cite https://docs.oracle.com/javase/tutorial/uiswing/layout/grid.html
+ * @cite https://docstore.mik.ua/orelly/java/exp/ch12_05.htm
+ * @cite https://docs.oracle.com/javase/tutorial/uiswing/components/border.html
  */
 public class GUI extends JFrame implements ActionListener, WindowListener
 {
@@ -41,7 +40,7 @@ public class GUI extends JFrame implements ActionListener, WindowListener
 	
 	/**
 	 * Entry point to program. Creates GUI window.
-	 * @param args program arguments
+	 * @param args
 	 */
 	public static void main(String[] args) {
 		new GUI();
@@ -201,12 +200,12 @@ public class GUI extends JFrame implements ActionListener, WindowListener
 	 * Requests a named value for an attribute of a passenger's baggage using
 	 * a dialog box.
 	 * 
-	 * references:
-	 * http://hajsoftutorial.com/showinputdialogget-integer-value/
-	 * https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
 	 * @throws NullPointerException if the user clicks cancel.
 	 * @param name the name of the value to ask for
-	 * @return the value taken from the user or -1 if they click cancel
+	 * @return the value taken from the user
+	 *	 * 
+	 * @cite http://hajsoftutorial.com/showinputdialogget-integer-value/
+	 * @cite https://docs.oracle.com/javase/tutorial/uiswing/components/dialog.html
 	 */
 	public float getFloat(String name) throws NullPointerException {
 		//set dimensions to negative value as program loops
@@ -228,8 +227,6 @@ public class GUI extends JFrame implements ActionListener, WindowListener
 						"Invalid " + name + ". Please reenter.",
 						"Invalid " + name,
 						JOptionPane.ERROR_MESSAGE);
-			} catch (NullPointerException e) {
-				return -1;
 			}
 		}
 		return dim;
@@ -280,84 +277,51 @@ public class GUI extends JFrame implements ActionListener, WindowListener
 				
 				//if the booking ref exists and matches the surname, proceed
 				if(matches) {
-					//declare dimensions float array
+					//declare dimension floats
 					float[] dimensions = new float[3];
 					
-					//declare weight float
-					float weight = 0;
-					
-					//track if user cancels operation
-					boolean isCancelled = false;
-					
 					//populate floats with information from user
-					//check user hasn't cancelled between each
 					dimensions[0] = getFloat("width");
+					dimensions[1] = getFloat("height");
+					dimensions[2] = getFloat("depth");
 					
-					//if the previous window wasn't cancelled
-					//get the next value
-					if(dimensions[0] != -1)
-						dimensions[1] = getFloat("height");
-					else
-						//user has cancelled the operation
-						isCancelled = true;
-
-					//if the previous wasn't cancelled and
-					//no other previous windows were cancelled,
-					//get the next value
-					if(dimensions[1] != -1 && !isCancelled)
-						dimensions[2] = getFloat("depth");
-					else
-						//user has cancelled the operation
-						isCancelled = true;
-
-					if(dimensions[2] != -1 && !isCancelled)
-						weight = getFloat("weight");
-					else
-						//user has cancelled the operation
-						isCancelled = true;
+					float weight = getFloat("weight");
 					
-					if(weight == -1)
-						isCancelled = true;
+					//try to process passenger
+					float fees = 
+							checkInHandler.processPassenger(bookingRef, dimensions, weight);
 					
-					//make sure values have been supplied for all baggage attributes
-					if(!isCancelled) {
-						//try to process passenger
-						float fees = 
-								checkInHandler.processPassenger(bookingRef, dimensions, weight);
+					//if there are no baggage fees, inform user
+					if(fees == 0)
+						lblResponse.setText("User checked in. Baggage ok.");
+					//check for error code
+					else if(fees == -1) {
+						lblResponse.setText("<html><font color = 'red'>" +
+								"Check in error." +
+								"</font></html>");
+					}
+					//if there are baggage fees, inform user
+					else {
+						//format string to 2dp and use red colouring
+						String feeString = String.format("%.2f", fees);
 						
-						//if there are no baggage fees, inform user
-						if(fees == 0)
-							lblResponse.setText("User checked in. Baggage ok.");
-						//check for error code
-						else if(fees == -1) {
-							lblResponse.setText("<html><font color = 'red'>" +
-									"Check in error." +
-									"</font></html>");
-						}
-						//if there are baggage fees, inform user
-						else {
-							//format string to 2dp and use red colouring
-							String feeString = String.format("%.2f", fees);
-							
-							lblResponse.setText("<html>User checked in. "
-									+ "Collect baggage fee: <font color = 'red'>"
-									+ feeString + ".</font></html>");
-							}
-						} else {
-							//if the user cancelled whilst inputting baggage details
-							//update status
-							lblResponse.setText("<html><font color = 'red'>"
-									+ "Check In Cancelled!</font></html>");
-					//if the booking ref exists, but does not match a user
-					} 
-				}
-				else {
+						lblResponse.setText("<html>User checked in. "
+								+ "Collect baggage fee: <font color = 'red'>"
+								+ feeString + ".</font></html>");
+					}
+				//if the booking ref exists, but does not match a user
+				} else {
 					//inform user
 					lblResponse.setText("<html><font color = 'red'>"
 							+ "Booking Reference does not match surname!"
 							+ "</font></html>");
-						
-				} 
+				}
+			//if the user presses cancel on the input dialog, a 
+			//NullPointerException is thrown
+			} catch (NullPointerException e) {
+				//user has cancelled check in, so update status
+				lblResponse.setText("<html><font color = 'red'>"
+						+ "Check In Cancelled!</font></html>");
 			//this exception is thrown by CheckInHandler if check in
 			//booking ref does not exist
 			} catch(IllegalReferenceCodeException e) {
