@@ -22,12 +22,12 @@ public class PassengerList {
 	 * 
 	 * @param flights
 	 */
-	public PassengerList(FlightList flights) throws IllegalReferenceCodeException  {
+	public PassengerList() throws IllegalReferenceCodeException  {
 		//instantiate HashMaps
 		passengersCheckedIn = new HashMap<String,Passenger>();
 		passengersNotCheckedIn =new  HashMap<String,Passenger>();
 		try{
-			loadPassengers(flights);
+			loadPassengers();
 		}catch(IllegalReferenceCodeException e){
 			System.out.println(e.getMessage());
 		}
@@ -38,9 +38,12 @@ public class PassengerList {
 	 * REQUIRES Load flights to already exist
 	 * Parses each line of the text file as a different passenger, and adds them to the collection of passengers.
 	 */
-	public void loadPassengers(FlightList flights) throws IllegalReferenceCodeException  {
+	public void loadPassengers() throws IllegalReferenceCodeException  {
 		File f = new File("passengers.txt");
 		Scanner scanner;
+		
+		//get the instance of FlightList
+		FlightList flights = FlightList.getInstance();
 		
 		try {
 			scanner = new Scanner(f);
