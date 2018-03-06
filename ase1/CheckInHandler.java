@@ -17,8 +17,9 @@ public class CheckInHandler {
 	 * using the loadFlights and loadPassengers methods.
 	 */
 	public CheckInHandler() {
-		flights = new FlightList();
-		passengers = new PassengerList(flights);
+		//get the instance of FlightList
+		flights = FlightList.getInstance();
+		passengers = new PassengerList();
 	}
 	
 	/**
